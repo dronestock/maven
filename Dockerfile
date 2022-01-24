@@ -78,18 +78,8 @@ RUN set -ex \
     \
     \
     \
-    && apk update \
-    \
-    # 安装FastGithub依赖库 \
-    && apk --no-cache add libgcc libstdc++ gcompat icu \
-    \
-    # 安装Git工具
-    && apk --no-cache add git openssh-client \
-    \
-    \
-    \
     # 增加执行权限
-    && chmod +x /bin/git \
+    && chmod +x /bin/maven \
     \
     \
     \
