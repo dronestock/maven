@@ -1,9 +1,9 @@
-module github.com/dronestock/ma
+module github.com/dronestock/maven
 
 go 1.17
 
 require (
-	github.com/dronestock/drone v0.1.1
+	github.com/dronestock/drone v0.1.2
 	github.com/storezhang/gox v1.8.4
 )
 
