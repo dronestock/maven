@@ -8,20 +8,20 @@ RUN apk update
 RUN apk add axel
 
 # 安装AdoptOpenJDK，替代Oracle JDK
-ARG JRE_MAJOR_VERSION=11
-ARG JRE_MINOR_VERSION=0
-ARG JRE_PATCH_VERSION=11
-ARG JAVA_HOME=/usr/lib/jvm/java-${JRE_MAJOR_VERSION}-adoptopenjdk-amd64
-ENV JRE_VERSION=${JRE_MAJOR_VERSION}.${JRE_MINOR_VERSION}.${JRE_PATCH_VERSION}
+ARG JDK_MAJOR_VERSION=11
+ARG JDK_MINOR_VERSION=0
+ARG JDK_PATCH_VERSION=11
+ARG JAVA_HOME=/usr/lib/jvm/java-${JDK_MAJOR_VERSION}-adoptopenjdk-amd64
+ENV JDK_VERSION=${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}
 ENV OPENJ9_VERSION 0.26.0
-ENV JRE_BIN_NAME jre${JRE_VERSION}.tar.gz
+ENV JDK_BIN_NAME jre${JDK_VERSION}.tar.gz
 # https://github.com/ibmruntimes/semeru17-binaries/releases/download/jdk-17.0.1%2B12_openj9-0.29.1/ibm-semeru-open-jdk_x64_linux_17.0.1_12_openj9-0.29.1.tar.gz
-ENV JRE_DOWNLOAD_URL=https://ghproxy.com/https://github.com/AdoptOpenJDK/openjdk${JRE_MAJOR_VERSION}-binaries/releases/download/jdk-${JRE_VERSION}+9_openj9-${OPENJ9_VERSION}/OpenJDK${JRE_MAJOR_VERSION}U-jre_x64_linux_openj9_${JRE_VERSION}_9_openj9-${OPENJ9_VERSION}.tar.gz
+ENV JDK_DOWNLOAD_URL=https://ghproxy.com/https://github.com/AdoptOpenJDK/openjdk${JDK_MAJOR_VERSION}-binaries/releases/download/jdk-${JDK_VERSION}+9_openj9-${OPENJ9_VERSION}/OpenJDK${JDK_MAJOR_VERSION}U-jre_x64_linux_openj9_${JDK_VERSION}_9_openj9-${OPENJ9_VERSION}.tar.gz
 
-RUN axel --num-connections 16 --output ${JRE_BIN_NAME} --insecure ${JRE_DOWNLOAD_URL}
-RUN tar -xzf ${JRE_BIN_NAME}
-RUN mkdir -p /usr/lib/jvm/java-${JRE_MAJOR_VERSION}-adoptopenjdk-amd64
-RUN mv jdk-${JRE_VERSION}+9-jre/* ${JAVA_HOME}/
+RUN axel --num-connections 16 --output ${JDK_BIN_NAME} --insecure ${JDK_DOWNLOAD_URL}
+RUN tar -xzf ${JDK_BIN_NAME}
+RUN mkdir -p /usr/lib/jvm/java-${JDK_MAJOR_VERSION}-adoptopenjdk-amd64
+RUN mv jdk-${JDK_VERSION}+9-jre/* ${JAVA_HOME}/
 
 
 
