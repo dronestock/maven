@@ -1,0 +1,47 @@
+kind: pipeline
+type: docker
+name: Maven插件
+
+
+clone:
+  disable: true
+
+
+trigger:
+  event:
+    exclude:
+      - pull_request
+
+
+steps:
+  - name: 拉代码
+    image: dronestock/git
+    pull: always
+    settings:
+      ssh_key:
+        from_secret: ssh_key_github
+
+  - name: 编译
+    image: pangum/drone
+    pull: always
+    settings:
+      output: maven
+
+  - name: 推送Docker镜像到中央库
+    image: dronestock/docker
+    pull: always
+    privileged: true
+    volumes:
+      - name: cache
+        path: /var/lib/docker
+    settings:
+      repository: dronestock/maven
+      username: dronestock
+      password:
+        from_secret: token_docker
+
+
+volumes:
+  - name: cache
+    host:
+      path: /var/lib/cache/docker
