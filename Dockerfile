@@ -15,6 +15,7 @@ ARG JAVA_HOME=/usr/lib/jvm/java-${JRE_MAJOR_VERSION}-adoptopenjdk-amd64
 ENV JRE_VERSION=${JRE_MAJOR_VERSION}.${JRE_MINOR_VERSION}.${JRE_PATCH_VERSION}
 ENV OPENJ9_VERSION 0.26.0
 ENV JRE_BIN_NAME jre${JRE_VERSION}.tar.gz
+# https://github.com/ibmruntimes/semeru17-binaries/releases/download/jdk-17.0.1%2B12_openj9-0.29.1/ibm-semeru-open-jdk_x64_linux_17.0.1_12_openj9-0.29.1.tar.gz
 ENV JRE_DOWNLOAD_URL=https://ghproxy.com/https://github.com/AdoptOpenJDK/openjdk${JRE_MAJOR_VERSION}-binaries/releases/download/jdk-${JRE_VERSION}+9_openj9-${OPENJ9_VERSION}/OpenJDK${JRE_MAJOR_VERSION}U-jre_x64_linux_openj9_${JRE_VERSION}_9_openj9-${OPENJ9_VERSION}.tar.gz
 
 RUN axel --num-connections 16 --output ${JRE_BIN_NAME} --insecure ${JRE_DOWNLOAD_URL}
