@@ -6,13 +6,11 @@ import (
 
 type plugin struct {
 	config *config
-	envs   []string
 }
 
 func newPlugin() drone.Plugin {
 	return &plugin{
 		config: new(config),
-		envs:   make([]string, 0),
 	}
 }
 

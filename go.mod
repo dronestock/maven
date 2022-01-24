@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/dronestock/drone v0.0.9
+	github.com/storezhang/gex v0.1.3
 	github.com/storezhang/gox v1.8.4
 )
 

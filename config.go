@@ -10,13 +10,13 @@ type config struct {
 	drone.Config
 
 	// 目录
-	Folder string `default:"${PLUGIN_FOLDER=${FOLDER=.}}" validate:"required"`
+	Folder string `default:"${PLUGIN_FOLDER=${FOLDER=.}}" validate:"required_without=Folders"`
 	// 目录列表
-	Folders []string `default:"${PLUGIN_FOLDERS=${FOLDERS}}"`
+	Folders []string `default:"${PLUGIN_FOLDERS=${FOLDERS}}" validate:"required_without=Folder"`
 }
 
 func (c *config) Fields() gox.Fields {
 	return []gox.Field{
-		field.String(`folder`, c.Folder),
+		field.Strings(`folders`, c.Folders...),
 	}
 }
