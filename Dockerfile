@@ -109,7 +109,7 @@ RUN set -ex \
 
 
 # 执行命令
-ENTRYPOINT /bin/bash
+ENTRYPOINT /bin/maven
 
 
 # 配置环境变量，配置Java主目录和Maven主目录以及Java和Maven的快捷方式
