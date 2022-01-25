@@ -84,6 +84,21 @@ RUN set -ex \
     \
     \
     \
+    # 安装依赖库
+    && apk update \
+    && apk --no-cache add libstdc++ gcompat \
+    \
+    # 解决找不到库的问题
+    && LD_PATH=/etc/ld-musl-x86_64.path \
+    && echo "/lib" >> ${LD_PATH} \
+    && echo "/usr/lib" >> ${LD_PATH} \
+    && echo "/usr/local/lib" >> ${LD_PATH} \
+    && echo "${JAVA_HOME}/lib/default" >> ${LD_PATH} \
+    && echo "${JAVA_HOME}/lib/j9vm" >> ${LD_PATH} \
+    && echo "${JAVA_HOME}/lib/server" >> ${LD_PATH} \
+    \
+    \
+    \
     # 增加执行权限
     && chmod +x /bin/maven \
     \
