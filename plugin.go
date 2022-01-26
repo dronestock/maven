@@ -16,7 +16,7 @@ type plugin struct {
 
 	// 坐标，组
 	Group string `default:"${PLUGIN_GROUP=${GROUP}}"`
-	// 坐标制品库
+	// 坐标，制品库
 	Artifact string `default:"${PLUGIN_ARTIFACT=${ARTIFACT}}"`
 }
 
