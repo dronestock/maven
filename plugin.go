@@ -31,6 +31,9 @@ func (p *plugin) Config() drone.Config {
 func (p *plugin) Steps() []*drone.Step {
 	return []*drone.Step{
 		drone.NewStep(p.test, drone.Name(`测试`)),
+		drone.NewStep(p.test, drone.Name(`打包`)),
+		drone.NewStep(p.test, drone.Name(`登录`)),
+		drone.NewStep(p.test, drone.Name(`发布`)),
 	}
 }
 
