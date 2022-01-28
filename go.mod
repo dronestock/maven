@@ -3,7 +3,9 @@ module github.com/dronestock/maven
 go 1.17
 
 require (
-	github.com/dronestock/drone v0.1.2
+	github.com/beevik/etree v1.1.0
+	github.com/dronestock/drone v0.1.6
+	github.com/storezhang/gfx v0.0.2
 	github.com/storezhang/gox v1.8.4
 )
 
