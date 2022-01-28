@@ -13,6 +13,4 @@ func (p *plugin) properties(project *etree.Element) {
 	for key, value := range p._properties() {
 		properties.CreateElement(key).SetText(value)
 	}
-
-	return
 }

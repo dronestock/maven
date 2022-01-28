@@ -36,6 +36,4 @@ func (p *plugin) setup(project *etree.Element) {
 	if `` != p.Packaging {
 		packaging.SetText(p.Packaging)
 	}
-
-	return
 }

@@ -18,6 +18,4 @@ func (p *plugin) plugins(project *etree.Element) {
 	p.sources(plugins)
 	// 设置文档发布
 	p.docs(plugins)
-
-	return
 }

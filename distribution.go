@@ -13,6 +13,4 @@ func (p *plugin) distribution(project *etree.Element) {
 	repository.CreateElement(keyId).SetText(repositoryId)
 	repository.CreateElement(keyName).SetText(repositoryId)
 	repository.CreateElement(keyUrl).SetText(p.Repository)
-
-	return
 }
