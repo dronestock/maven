@@ -13,7 +13,7 @@ func (p *plugin) global() (undo bool, err error) {
 		return
 	}
 
-	filename := filepath.Join(os.Getenv(homeEnv), mavenDir, settingsFilename)
+	filename := filepath.Join(os.Getenv(homeEnv), mavenHome, settingsFilename)
 	if !gfx.Exist(filename) {
 		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
 			return

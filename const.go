@@ -4,6 +4,7 @@ const (
 	exe         = `mvn`
 	gpgExe      = `gpg`
 	homeEnv     = `HOME`
+	gpgHome     = `.gnupg`
 	pomFilename = `pom.xml`
 
 	configMirrors    = `mirrors`
@@ -14,7 +15,7 @@ const (
 	xmlTrue     = `true`
 	xmlAlways   = `always`
 
-	mavenDir         = `.m2`
+	mavenHome        = `.m2`
 	settingsFilename = `settings.xml`
 
 	xmlDeclare        = `version="1.0" encoding="UTF-8"`
