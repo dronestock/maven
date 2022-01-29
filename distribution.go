@@ -6,7 +6,11 @@ import (
 	`github.com/beevik/etree`
 )
 
-const repositoryFormat = `repository[id='%s']`
+const (
+	repositoryFormat = `repository[id='%s']`
+
+	keyDistribution = `distributionManagement`
+)
 
 func (p *plugin) distribution(project *etree.Element) {
 	distribution := project.SelectElement(keyDistribution)

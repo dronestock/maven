@@ -11,6 +11,7 @@ const (
 	toIntFormat = `%d`
 	xmlSpaces   = 2
 	xmlTrue     = `true`
+	xmlAlways   = `always`
 
 	mavenDir         = `.m2`
 	settingsFilename = `settings.xml`

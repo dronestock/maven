@@ -6,7 +6,6 @@ const (
 	keyXsi    = `xmlns:xsi`
 	keySchema = `xsi:schemaLocation`
 
-	keyGroup      = `group`
 	keyGroupId    = `groupId`
 	keyArtifactId = `artifactId`
 	keyVersion    = `version`
@@ -17,6 +16,11 @@ const (
 	keyName = `name`
 	keyUrl  = `url`
 
-	keyDistribution = `distributionManagement`
-	keyRepository   = `repository`
+	keyRepository         = `repository`
+	keyRepositories       = `repositories`
+	keyPluginRepository   = `pluginRepository`
+	keyPluginRepositories = `pluginRepositories`
+
+	keyReleases  = `releases`
+	keySnapshots = `snapshots`
 )

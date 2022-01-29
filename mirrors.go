@@ -29,7 +29,7 @@ func (p *plugin) mirrors(settings *etree.Element) () {
 
 		mirror = mirrors.CreateElement(keyMirror)
 		mirror.CreateElement(keyId).CreateText(fmt.Sprintf(toIntFormat, count))
-		mirror.CreateElement(keyMirrorOf).CreateText(`central`)
+		mirror.CreateElement(keyMirrorOf).CreateText(xmlCentral)
 		mirror.CreateElement(keyName).CreateText(fmt.Sprintf(toIntFormat, count))
 		mirror.CreateElement(keyUrl).CreateText(url)
 

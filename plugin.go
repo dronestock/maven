@@ -82,6 +82,9 @@ func (p *plugin) Steps() []*drone.Step {
 
 func (p *plugin) Setup() (unset bool, err error) {
 	p.Parse(p.__properties, p.Properties...)
+	if `` == p.GpgPassphrase {
+		p.GpgPassphrase = gox.RandString(8)
+	}
 
 	return
 }

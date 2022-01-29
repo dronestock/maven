@@ -33,7 +33,7 @@ func (p *plugin) global() (undo bool, err error) {
 	// 组信息
 	p.groups(settings)
 	// 镜像
-	p.mirrors(settings)
+	// p.mirrors(settings)
 	// 仓库
 	p.servers(settings)
 	// 配置

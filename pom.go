@@ -29,6 +29,8 @@ func (p *plugin) pom() (undo bool, err error) {
 	p.setup(project)
 	// 设置项目属性
 	p.properties(project)
+	// 设置仓库
+	p.repositories(project)
 	// 设置发布仓库
 	p.distribution(project)
 	// 设置发布插件
