@@ -16,7 +16,8 @@ func (p *plugin) keypair() (undo bool, err error) {
 	}
 	// 执行命令
 	err = p.Exec(gpgExe, drone.Args(args...), drone.Dir(p.Folder))
-	// gpg --keyserver hkp://keyserver.ubuntu.com --send-keys $(gpg --list-signatures --with-colons | grep 'sig' | grep 'the Name-Real of my key' | head -n 1 | cut -d':' -f5)
+	// gpg --keyserver hkp://keyserver.ubuntu.com --send-keys
+	// $(gpg --list-signatures --with-colons | grep 'sig' | grep 'the Name-Real of my key' | head -n 1 | cut -d':' -f5)
 
 	return
 }
