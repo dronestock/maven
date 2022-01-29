@@ -29,5 +29,5 @@ func (p *plugin) profiles(settings *etree.Element) () {
 
 	gpg := profile.CreateElement(keyProperties)
 	gpg.CreateElement(keyGpgExecutable).SetText(xmlGpgExecutable)
-	gpg.CreateElement(keyGpgPassphrase).SetText(p.GpgPassphrase)
+	gpg.CreateElement(keyGpgPassphrase).SetText(p.Password)
 }

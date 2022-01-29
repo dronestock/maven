@@ -12,6 +12,10 @@ const (
 )
 
 func (p *plugin) gpg(plugins *etree.Element) {
+	if `` == p.Password {
+		return
+	}
+
 	gpg := plugins.FindElementPath(etree.MustCompilePath(gpgPath))
 	if nil != gpg {
 		plugins.RemoveChildAt(gpg.Index())

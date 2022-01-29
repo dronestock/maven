@@ -2,6 +2,7 @@ package main
 
 const (
 	exe         = `mvn`
+	gpgExe      = `gpg`
 	homeEnv     = `HOME`
 	pomFilename = `pom.xml`
 

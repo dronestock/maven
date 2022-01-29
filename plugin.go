@@ -21,8 +21,6 @@ type plugin struct {
 	Username string `default:"${PLUGIN_USERNAME=${USERNAME}}"`
 	// 密码
 	Password string `default:"${PLUGIN_PASSWORD=${PASSWORD}}"`
-	// 签名密码
-	GpgPassphrase string `default:"${PLUGIN_GPG_PASSPHRASE=${GPG_PASSPHRASE}}"`
 
 	// 坐标，组
 	Group string `default:"${PLUGIN_GROUP=${GROUP}}"`
@@ -74,6 +72,7 @@ func (p *plugin) Config() drone.Config {
 
 func (p *plugin) Steps() []*drone.Step {
 	return []*drone.Step{
+		drone.NewStep(p.keypair, drone.Name(`生成GPG密钥`)),
 		drone.NewStep(p.global, drone.Name(`写入全局配置`)),
 		drone.NewStep(p.pom, drone.Name(`修改项目配置`), drone.Break()),
 		drone.NewStep(p.do, drone.Name(`执行Maven操作`)),
@@ -82,9 +81,6 @@ func (p *plugin) Steps() []*drone.Step {
 
 func (p *plugin) Setup() (unset bool, err error) {
 	p.Parse(p.__properties, p.Properties...)
-	if `` == p.GpgPassphrase {
-		p.GpgPassphrase = gox.RandString(8)
-	}
 
 	return
 }
