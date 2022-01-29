@@ -27,6 +27,11 @@ func (p *plugin) do() (undo bool, err error) {
 		args = append(args, `deploy`)
 	}
 
+	// 打印更多日志
+	if p.Verbose {
+		args = append(args, `-X`)
+	}
+
 	// 执行命令
 	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Folder))
 

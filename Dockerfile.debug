@@ -74,6 +74,9 @@ ARG JAVA_HOME
 ARG MAVEN_HOME
 
 
+RUN apk --no-cache add libstdc++ gcompat gnupg
+
+
 # 复制文件
 COPY --from=jdk ${JAVA_HOME} ${JAVA_HOME}
 COPY --from=maven ${MAVEN_HOME} ${MAVEN_HOME}
@@ -83,10 +86,6 @@ COPY maven /bin
 RUN set -ex \
     \
     \
-    \
-    # 安装依赖库
-    && apk update \
-    && apk --no-cache add libstdc++ gcompat gnupg \
     \
     # 解决找不到库的问题
     && LD_PATH=/etc/ld-musl-x86_64.path \

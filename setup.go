@@ -5,17 +5,17 @@ import (
 )
 
 func (p *plugin) setup(project *etree.Element) {
-	group := project.SelectElement(keyGroup)
+	group := project.SelectElement(keyGroupId)
 	if nil == group {
-		group = project.CreateElement(keyGroup)
+		group = project.CreateElement(keyGroupId)
 	}
 	if `` != p.Group {
 		group.SetText(p.Group)
 	}
 
-	artifact := project.SelectElement(keyArtifact)
+	artifact := project.SelectElement(keyArtifactId)
 	if nil == artifact {
-		artifact = project.CreateElement(keyArtifact)
+		artifact = project.CreateElement(keyArtifactId)
 	}
 	if `` != p.Artifact {
 		artifact.SetText(p.Artifact)

@@ -11,6 +11,10 @@ func (p *plugin) properties(project *etree.Element) {
 	}
 
 	for key, value := range p._properties() {
-		properties.CreateElement(key).SetText(value)
+		property := properties.SelectElement(key)
+		if nil == property {
+			property = properties.CreateElement(key)
+		}
+		property.SetText(value)
 	}
 }
