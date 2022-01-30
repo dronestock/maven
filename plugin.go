@@ -76,6 +76,7 @@ func (p *plugin) Config() drone.Config {
 func (p *plugin) Steps() []*drone.Step {
 	return []*drone.Step{
 		drone.NewStep(p.keypair, drone.Name(`生成GPG密钥`)),
+		drone.NewStep(p.gsk, drone.Name(`上传密钥到服务器`)),
 		drone.NewStep(p.global, drone.Name(`写入全局配置`)),
 		drone.NewStep(p.pom, drone.Name(`修改项目配置`), drone.Break()),
 		drone.NewStep(p.do, drone.Name(`执行Maven操作`)),

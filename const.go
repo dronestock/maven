@@ -3,6 +3,7 @@ package main
 const (
 	exe         = `mvn`
 	gpgExe      = `gpg`
+	gskExe      = `gsk`
 	homeEnv     = `HOME`
 	gpgHome     = `.gnupg`
 	pomFilename = `pom.xml`

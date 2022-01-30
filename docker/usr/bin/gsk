@@ -1,0 +1,37 @@
+#!/bin/bash
+
+ARGS=$(getopt --options u:s: --alternative --longoptions username:,server: --name 'gsk' -- "$@")
+if [ $? != 0 ]; then
+    echo "退出..."
+    exit 1
+fi
+
+eval set -- "${ARGS}"
+
+while true
+do
+    case "$1" in
+        -u|--username)
+            username=$2;
+            shift
+            ;;
+        -s|--server)
+            server=$2
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "内部错误"
+            exit 1
+            ;;
+    esac
+shift
+done
+
+# 取出密钥
+key=$(gpg --list-signatures --with-colons | grep 'sig' | grep "${username}" | head -n 1 | cut -d':' -f5)
+# 上传密钥到服务器
+gpg --keyserver "${server}" --send-keys "${key}"

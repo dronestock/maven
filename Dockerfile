@@ -77,6 +77,7 @@ ARG MAVEN_HOME
 # 复制文件
 COPY --from=jdk ${JAVA_HOME} ${JAVA_HOME}
 COPY --from=maven ${MAVEN_HOME} ${MAVEN_HOME}
+COPY docker /
 COPY maven /bin
 
 
@@ -101,6 +102,7 @@ RUN set -ex \
     \
     # 增加执行权限
     && chmod +x /bin/maven \
+    && chmod +x /usr/bin/gsk \
     \
     \
     \
