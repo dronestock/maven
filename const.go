@@ -10,10 +10,11 @@ const (
 	configMirrors    = `mirrors`
 	configProperties = `properties`
 
-	toIntFormat = `%d`
-	xmlSpaces   = 2
-	xmlTrue     = `true`
-	xmlAlways   = `always`
+	randLength = 8
+	xmlSpaces  = 2
+	xmlTrue    = `true`
+	xmlAll     = `*`
+	xmlAlways  = `always`
 
 	mavenHome        = `.m2`
 	settingsFilename = `settings.xml`

@@ -7,7 +7,9 @@ var (
 		`java.version`:          `17`,
 	}
 	defaultMirrors = []string{
-		`https://maven.aliyun.com/nexus/groups/public/`,
+		`https://mirrors.huaweicloud.com/repository/maven/`,
+		`https://maven.aliyun.com/repository/public/`,
 		`https://mirrors.163.com/maven/repository/maven-public/`,
+		`https://mirrors.cloud.tencent.com/nexus/repository/maven-public/`,
 	}
 )

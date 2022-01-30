@@ -2,8 +2,10 @@ package main
 
 import (
 	`fmt`
+	`net/url`
 
 	`github.com/beevik/etree`
+	`github.com/storezhang/gox`
 )
 
 const (
@@ -20,19 +22,20 @@ func (p *plugin) mirrors(settings *etree.Element) () {
 	}
 
 	mirrors := settings.CreateElement(keyMirrors)
-	count := 1
-	for _, url := range p._mirrors() {
-		mirror := mirrors.FindElementPath(etree.MustCompilePath(fmt.Sprintf(mirrorPathFormat, url)))
+	for _, _mirror := range p._mirrors() {
+		mirror := mirrors.FindElementPath(etree.MustCompilePath(fmt.Sprintf(mirrorPathFormat, _mirror)))
 		if nil != mirror {
 			mirrors.RemoveChildAt(mirror.Index())
 		}
 
+		id := gox.RandString(randLength)
+		if host, err := url.Parse(_mirror); nil == err {
+			id = host.Hostname()
+		}
 		mirror = mirrors.CreateElement(keyMirror)
-		mirror.CreateElement(keyId).CreateText(fmt.Sprintf(toIntFormat, count))
-		mirror.CreateElement(keyMirrorOf).CreateText(xmlCentral)
-		mirror.CreateElement(keyName).CreateText(fmt.Sprintf(toIntFormat, count))
-		mirror.CreateElement(keyUrl).CreateText(url)
-
-		count++
+		mirror.CreateElement(keyId).CreateText(id)
+		mirror.CreateElement(keyMirrorOf).CreateText(xmlAll)
+		mirror.CreateElement(keyName).CreateText(id)
+		mirror.CreateElement(keyUrl).CreateText(_mirror)
 	}
 }

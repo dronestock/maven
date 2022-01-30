@@ -22,6 +22,9 @@ type plugin struct {
 	// 密码
 	Password string `default:"${PLUGIN_PASSWORD=${PASSWORD}}"`
 
+	// 密钥服务器
+	GpgServer string `default:"${PLUGIN_GPG_SERVER=${GPG_SERVER=hkp://keyserver.ubuntu.com}}"`
+
 	// 坐标，组
 	Group string `default:"${PLUGIN_GROUP=${GROUP}}"`
 	// 坐标，制品
@@ -98,7 +101,7 @@ func (p *plugin) repositoryId() (id string) {
 	}
 
 	if repository, err := url.Parse(p.Repository); nil != err {
-		id = gox.RandString(8)
+		id = gox.RandString(randLength)
 	} else {
 		id = repository.Host
 	}
