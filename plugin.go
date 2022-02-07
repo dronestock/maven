@@ -24,6 +24,8 @@ type plugin struct {
 
 	// 密钥服务器
 	GpgServer string `default:"${PLUGIN_GPG_SERVER=${GPG_SERVER=hkp://keyserver.ubuntu.com}}"`
+	// 生成密钥过期时间
+	GpgExpire string `default:"${PLUGIN_GPG_EXPIRE=${GPG_EXPIRE=7d}}"`
 
 	// 坐标，组
 	Group string `default:"${PLUGIN_GROUP=${GROUP}}"`

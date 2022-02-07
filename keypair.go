@@ -22,6 +22,7 @@ func (p *plugin) keypair() (undo bool, err error) {
 		p.Username,
 		`default`,
 		`default`,
+		p.GpgExpire,
 	}
 	err = p.Exec(gpgExe, drone.Args(args...), drone.Dir(p.Folder))
 
