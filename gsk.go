@@ -5,7 +5,7 @@ import (
 )
 
 func (p *plugin) gsk() (undo bool, err error) {
-	args := []string{
+	args := []interface{}{
 		`--server`,
 		p.GpgServer,
 		`--username`,

@@ -14,7 +14,7 @@ func (p *plugin) keypair() (undo bool, err error) {
 		return
 	}
 
-	args := []string{
+	args := []interface{}{
 		`--batch`,
 		`--passphrase`,
 		p.Password,

@@ -5,7 +5,7 @@ import (
 )
 
 func (p *plugin) do() (undo bool, err error) {
-	args := make([]string, 0)
+	args := make([]interface{}, 0)
 
 	// 清理
 	if p.Clean {
