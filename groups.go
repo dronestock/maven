@@ -13,7 +13,7 @@ const (
 
 func (p *plugin) groups(settings *etree.Element) {
 	groups := settings.CreateElement(keySettingsGroups)
-	if nil == groups {
+	if nil != groups {
 		group := groups.CreateElement(keySettingsGroup)
 		group.CreateText(xmlPlugins)
 	}
