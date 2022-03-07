@@ -16,17 +16,14 @@ trigger:
 steps:
   - name: 代码
     image: dronestock/git
-    pull: always
 
   - name: 编译
     image: pangum/drone
-    pull: always
     settings:
       output: maven
 
   - name: 发布
     image: dronestock/docker
-    pull: always
     privileged: true
     volumes:
       - name: cache
