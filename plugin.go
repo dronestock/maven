@@ -16,7 +16,7 @@ type plugin struct {
 
 	// 正式仓库
 	// nolint:lll
-	Repository string `default:"${PLUGIN_REPOSITORY=${REPOSITORY=https://oss.sonatype.org/service/local/staging/deploy/maven2}}"`
+	Repository string `default:"${PLUGIN_REPOSITORY=${REPOSITORY=https://s01.oss.sonatype.org/service/local/staging/deploy/maven2}}"`
 	// 用户名
 	Username string `default:"${PLUGIN_USERNAME=${USERNAME}}"`
 	// 密码
