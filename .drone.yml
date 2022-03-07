@@ -14,7 +14,7 @@ trigger:
 
 
 steps:
-  - name: 拉代码
+  - name: 代码
     image: dronestock/git
     pull: always
 
@@ -24,13 +24,10 @@ steps:
     settings:
       output: maven
 
-  - name: 推送Docker镜像到中央库
+  - name: 发布
     image: dronestock/docker
     pull: always
     privileged: true
-    when:
-      event:
-        - tag
     volumes:
       - name: cache
         path: /var/lib/docker

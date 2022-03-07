@@ -1,10 +1,16 @@
 package main
 
 import (
+	`strings`
+
 	`github.com/dronestock/drone`
 )
 
 func (p *plugin) gsk() (undo bool, err error) {
+	if undo = `` == strings.TrimSpace(p.Username) || `` == strings.TrimSpace(p.Password); undo {
+		return
+	}
+
 	args := []interface{}{
 		`--server`,
 		p.GpgServer,
