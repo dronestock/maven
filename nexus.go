@@ -22,7 +22,7 @@ func (p *plugin) nexus(plugins *etree.Element) {
 	if nil != nexus {
 		plugins.RemoveChildAt(nexus.Index())
 	}
-	if !p.Sources {
+	if !p.Source {
 		return
 	}
 

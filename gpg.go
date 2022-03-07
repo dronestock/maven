@@ -20,7 +20,7 @@ func (p *plugin) gpg(plugins *etree.Element) {
 	if nil != gpg {
 		plugins.RemoveChildAt(gpg.Index())
 	}
-	if !p.Sources {
+	if !p.Source {
 		return
 	}
 

@@ -46,9 +46,9 @@ type plugin struct {
 	// 清理
 	Clean bool `default:"${PLUGIN_CLEAN=${CLEAN=true}}"`
 	// 是否包含源码
-	Sources bool `default:"${PLUGIN_SOURCES=${SOURCES=true}}"`
+	Source bool `default:"${PLUGIN_SOURCE=${SOURCE=true}}"`
 	// 是否包含文档
-	Docs bool `default:"${PLUGIN_DOCS=${DOCS=true}}"`
+	Doc bool `default:"${PLUGIN_DOC=${DOC=true}}"`
 
 	// 打包插件版本
 	JarPluginVersion string `default:"${PLUGIN_JAR_PLUGIN_VERSION=${JAR_PLUGIN_VERSION=3.2.1}}"`
