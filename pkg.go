@@ -4,7 +4,7 @@ import (
 	`github.com/dronestock/drone`
 )
 
-func (p *plugin) do() (undo bool, err error) {
+func (p *plugin) pkg() (undo bool, err error) {
 	args := make([]interface{}, 0)
 
 	// 清理
@@ -21,12 +21,6 @@ func (p *plugin) do() (undo bool, err error) {
 
 	// 打包
 	args = append(args, `package`)
-
-	// 发布
-	if `` != p.Username && `` != p.Password {
-		args = append(args, `deploy`)
-	}
-
 	// 打印更多日志
 	if p.Verbose {
 		args = append(args, `-X`)
