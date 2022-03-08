@@ -14,9 +14,8 @@ type plugin struct {
 	// 目录
 	Folder string `default:"${PLUGIN_FOLDER=${FOLDER=.}}" validate:"required"`
 
-	// 正式仓库
-	// nolint:lll
-	Repository string `default:"${PLUGIN_REPOSITORY=${REPOSITORY=https://s01.oss.sonatype.org/service/local/staging/deploy/maven2}}"`
+	// 仓库
+	Repository repository `default:"${PLUGIN_REPOSITORY=${REPOSITORY}}"`
 	// 用户名
 	Username string `default:"${PLUGIN_USERNAME=${USERNAME}}"`
 	// 密码

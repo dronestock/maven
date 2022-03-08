@@ -31,7 +31,7 @@ func (p *plugin) global() (undo bool, err error) {
 	// 配置全局
 	settings := p.settings(doc)
 	// 本地仓库
-	p.repository(settings)
+	p.localRepository(settings)
 	// 组信息
 	p.groups(settings)
 	// 镜像

@@ -8,9 +8,6 @@ const (
 	gpgHome     = `.gnupg`
 	pomFilename = `pom.xml`
 
-	configMirrors    = `mirrors`
-	configProperties = `properties`
-
 	randLength = 8
 	xmlSpaces  = 2
 	xmlTrue    = `true`
