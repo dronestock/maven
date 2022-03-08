@@ -17,6 +17,7 @@ const (
 	keyUrl  = `url`
 
 	keyRepository         = `repository`
+	keySnapshotRepository = `snapshotRepository`
 	keyRepositories       = `repositories`
 	keyPluginRepository   = `pluginRepository`
 	keyPluginRepositories = `pluginRepositories`

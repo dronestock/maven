@@ -21,10 +21,8 @@ type plugin struct {
 	// 密码
 	Password string `default:"${PLUGIN_PASSWORD=${PASSWORD}}"`
 
-	// 密钥服务器
-	GpgServer string `default:"${PLUGIN_GPG_SERVER=${GPG_SERVER=hkp://keyserver.ubuntu.com}}"`
-	// 生成密钥过期时间
-	GpgExpire string `default:"${PLUGIN_GPG_EXPIRE=${GPG_EXPIRE=7d}}"`
+	// 密钥
+	Gpg gpg `default:"${PLUGIN_GPG=${GPG}}"`
 
 	// 坐标，组
 	Group string `default:"${PLUGIN_GROUP=${GROUP}}"`
@@ -60,8 +58,7 @@ type plugin struct {
 	// 发布仓库版本
 	NexusPluginVersion string `default:"${PLUGIN_NEXUS_PLUGIN_VERSION=${NEXUS_PLUGIN_VERSION=1.6.3}}"`
 
-	__properties  map[string]string
-	_repositoryId string
+	__properties map[string]string
 }
 
 func newPlugin() drone.Plugin {
@@ -97,18 +94,12 @@ func (p *plugin) Fields() gox.Fields {
 	}
 }
 
-func (p *plugin) repositoryId() (id string) {
-	id = p._repositoryId
-	if `` != id {
-		return
-	}
-
-	if repository, err := url.Parse(p.Repository); nil != err {
+func (p *plugin) repositoryId(link string) (id string) {
+	if uri, err := url.Parse(link); nil != err {
 		id = gox.RandString(randLength)
 	} else {
-		id = repository.Host
+		id = uri.Host
 	}
-	p._repositoryId = id
 
 	return
 }

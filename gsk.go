@@ -13,7 +13,7 @@ func (p *plugin) gsk() (undo bool, err error) {
 
 	args := []interface{}{
 		`--server`,
-		p.GpgServer,
+		p.Gpg.Server,
 		`--username`,
 		p.Username,
 	}

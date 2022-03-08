@@ -40,7 +40,7 @@ func (p *plugin) plugins(project *etree.Element) {
 	// 设置文档发布
 	p.doc(plugins)
 	// 设置构件签名
-	p.gpg(plugins)
+	p.sign(plugins)
 	// 设置发布
 	p.nexus(plugins)
 }

@@ -24,10 +24,10 @@ func (p *plugin) profiles(settings *etree.Element) () {
 	if nil == profile {
 		profile = profiles.CreateElement(keyProfile)
 	}
-	profile.CreateElement(keyId).SetText(p.repositoryId())
+	profile.CreateElement(keyId).SetText(p.repositoryId(p.Repository.Release))
 	profile.CreateElement(keyActivation).CreateElement(keyActivationDefault).SetText(xmlTrue)
 
-	gpg := profile.CreateElement(keyProperties)
-	gpg.CreateElement(keyGpgExecutable).SetText(xmlGpgExecutable)
-	gpg.CreateElement(keyGpgPassphrase).SetText(p.Password)
+	sign := profile.CreateElement(keyProperties)
+	sign.CreateElement(keyGpgExecutable).SetText(xmlGpgExecutable)
+	sign.CreateElement(keyGpgPassphrase).SetText(p.Password)
 }
