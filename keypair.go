@@ -24,7 +24,7 @@ func (p *plugin) keypair() (undo bool, err error) {
 		`default`,
 		p.Gpg.Expire,
 	}
-	err = p.Exec(gpgExe, drone.Args(args...), drone.Dir(p.Src))
+	err = p.Exec(gpgExe, drone.Args(args...), drone.Dir(p.Source))
 
 	return
 }

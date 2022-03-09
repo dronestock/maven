@@ -16,7 +16,7 @@ func (p *plugin) source(plugins *etree.Element) {
 	if nil != sources {
 		plugins.RemoveChildAt(sources.Index())
 	}
-	if !p.Source {
+	if !p.Sources {
 		return
 	}
 

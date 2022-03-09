@@ -27,7 +27,7 @@ func (p *plugin) pkg() (undo bool, err error) {
 	}
 
 	// 执行命令
-	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Src))
+	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Source))
 
 	return
 }

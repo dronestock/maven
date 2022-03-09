@@ -16,7 +16,7 @@ func (p *plugin) doc(plugins *etree.Element) {
 	if nil != docs {
 		plugins.RemoveChildAt(docs.Index())
 	}
-	if !p.Doc {
+	if !p.Docs {
 		return
 	}
 

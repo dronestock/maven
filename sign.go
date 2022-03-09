@@ -20,7 +20,7 @@ func (p *plugin) sign(plugins *etree.Element) {
 	if nil != sign {
 		plugins.RemoveChildAt(sign.Index())
 	}
-	if !p.Source {
+	if !p.Sources {
 		return
 	}
 
