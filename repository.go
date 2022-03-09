@@ -2,7 +2,7 @@ package main
 
 type repository struct {
 	// 正式仓库
-	Release string `default:"https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"`
+	Release string `default:"https://s01.oss.sonatype.org/service/local/staging/deploy/maven2" json:"release"`
 	// 快照仓库
-	Snapshot string `default:"https://s01.oss.sonatype.org/content/repositories/snapshots"`
+	Snapshot string `default:"https://s01.oss.sonatype.org/content/repositories/snapshots" json:"snapshot"`
 }
