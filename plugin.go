@@ -11,8 +11,8 @@ import (
 type plugin struct {
 	drone.PluginBase
 
-	// 目录
-	Folder string `default:"${PLUGIN_FOLDER=${FOLDER=.}}" validate:"required"`
+	// 源文件目录
+	Src string `default:"${PLUGIN_SRC=${SRC=.}}" validate:"required"`
 
 	// 仓库
 	Repository repository `default:"${PLUGIN_REPOSITORY=${REPOSITORY}}"`
@@ -90,7 +90,7 @@ func (p *plugin) Setup() (unset bool, err error) {
 
 func (p *plugin) Fields() gox.Fields {
 	return []gox.Field{
-		field.String(`folder`, p.Folder),
+		field.String(`folder`, p.Src),
 	}
 }
 

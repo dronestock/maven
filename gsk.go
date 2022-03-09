@@ -17,7 +17,7 @@ func (p *plugin) gsk() (undo bool, err error) {
 		`--username`,
 		p.Username,
 	}
-	err = p.Exec(gskExe, drone.Args(args...), drone.Dir(p.Folder))
+	err = p.Exec(gskExe, drone.Args(args...), drone.Dir(p.Src))
 
 	return
 }

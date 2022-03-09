@@ -20,7 +20,7 @@ func (p *plugin) deploy() (undo bool, err error) {
 	}
 
 	// 执行命令
-	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Folder))
+	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Src))
 
 	return
 }

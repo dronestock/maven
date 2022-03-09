@@ -8,7 +8,7 @@ import (
 )
 
 func (p *plugin) pom() (undo bool, err error) {
-	filename := filepath.Join(p.Folder, pomFilename)
+	filename := filepath.Join(p.Src, pomFilename)
 	if !gfx.Exist(filename) {
 		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
 			return
