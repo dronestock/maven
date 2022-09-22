@@ -8,7 +8,7 @@ ARG MAVEN_HOME=/opt/apache/maven
 
 
 
-FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.15.6 AS jdk
+FROM storezhang/alpine:3.16.2 AS jdk
 
 # 明确指定工作目录，防止后面运行命令出现文件或者目录找不到的问题
 WORKDIR /opt
@@ -32,7 +32,7 @@ RUN mv jdk-${JDK_VERSION}/* ${JAVA_HOME}/
 
 
 
-FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.15.6 AS maven
+FROM storezhang/alpine:3.16.2 AS maven
 
 # 明确指定工作目录，防止后面运行命令出现文件或者目录找不到的问题
 WORKDIR /opt
@@ -60,7 +60,7 @@ RUN mv ${MAVEN_FULL_NAME}/* ${MAVEN_HOME}/
 
 
 # 打包真正的镜像
-FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.15.6
+FROM storezhang/alpine:3.16.2
 
 
 LABEL author="storezhang<华寅>" \
