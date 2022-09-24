@@ -1,7 +1,7 @@
 ARG JDK_VERSION=17.0.1+12
 ARG JAVA_HOME=/usr/lib/jvm/adoptopenjdk
 
-ARG MAVEN_VERSION=3.8.4
+ARG MAVEN_VERSION=3.8.6
 ARG MAVEN_HOME=/opt/apache/maven
 
 
