@@ -5,7 +5,7 @@ import (
 	`net/url`
 
 	`github.com/beevik/etree`
-	`github.com/storezhang/gox`
+	`github.com/goexl/gox`
 )
 
 const (

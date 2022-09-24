@@ -4,12 +4,12 @@ import (
 	`net/url`
 
 	`github.com/dronestock/drone`
-	`github.com/storezhang/gox`
-	`github.com/storezhang/gox/field`
+	`github.com/goexl/gox`
+	`github.com/goexl/gox/field`
 )
 
 type plugin struct {
-	drone.PluginBase
+	drone.Base
 
 	// 源文件目录
 	Source string `default:"${PLUGIN_SOURCE=${SOURCE=.}}" validate:"required"`

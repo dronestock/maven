@@ -4,12 +4,12 @@ import (
 	`path/filepath`
 
 	`github.com/beevik/etree`
-	`github.com/storezhang/gfx`
+	"github.com/goexl/gfx"
 )
 
 func (p *plugin) pom() (undo bool, err error) {
 	filename := filepath.Join(p.Source, pomFilename)
-	if !gfx.Exist(filename) {
+	if _,exists:=gfx.Exists(filename);!exists {
 		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
 			return
 		}

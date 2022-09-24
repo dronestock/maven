@@ -5,7 +5,7 @@ import (
 	`path/filepath`
 
 	`github.com/beevik/etree`
-	`github.com/storezhang/gfx`
+	"github.com/goexl/gfx"
 )
 
 func (p *plugin) global() (undo bool, err error) {
@@ -14,7 +14,7 @@ func (p *plugin) global() (undo bool, err error) {
 	}
 
 	filename := filepath.Join(os.Getenv(homeEnv), mavenHome, settingsFilename)
-	if !gfx.Exist(filename) {
+	if _,exists:=gfx.Exists(filename);!exists {
 		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
 			return
 		}

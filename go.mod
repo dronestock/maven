@@ -4,28 +4,34 @@ go 1.17
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/dronestock/drone v0.3.1
-	github.com/storezhang/gfx v0.0.2
-	github.com/storezhang/gox v1.8.4
+	github.com/dronestock/drone v0.4.2
+	github.com/goexl/gfx v0.1.1
+	github.com/goexl/gox v0.0.8
 )
 
 require (
 	github.com/drone/envsubst v1.0.3 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.10.1 // indirect
-	github.com/goexl/gex v0.2.1 // indirect
-	github.com/goexl/mengpo v0.1.4 // indirect
+	github.com/go-playground/validator/v10 v10.11.0 // indirect
+	github.com/goexl/baozheng v0.0.1 // indirect
+	github.com/goexl/env v0.0.2 // indirect
+	github.com/goexl/exc v0.0.4 // indirect
+	github.com/goexl/gex v0.2.6 // indirect
+	github.com/goexl/gox v0.0.9 // indirect
+	github.com/goexl/mengpo v0.2.0 // indirect
+	github.com/goexl/simaqian v0.1.3 // indirect
+	github.com/goexl/xiren v0.0.3 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/mitchellh/mapstructure v1.4.3 // indirect
-	github.com/sirupsen/logrus v1.8.1 // indirect
-	github.com/storezhang/simaqian v0.1.1 // indirect
-	github.com/storezhang/validatorx v1.0.9 // indirect
-	go.uber.org/atomic v1.9.0 // indirect
+	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/rs/xid v1.4.0 // indirect
+	github.com/sirupsen/logrus v1.9.0 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	go.uber.org/zap v1.21.0 // indirect
-	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70 // indirect
-	golang.org/x/sys v0.0.0-20220307203707-22a9840ba4d7 // indirect
+	go.uber.org/zap v1.23.0 // indirect
+	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
+	golang.org/x/sys v0.0.0-20220909162455-aba9fc2a8ff2 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
 

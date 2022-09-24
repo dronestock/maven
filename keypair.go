@@ -5,7 +5,6 @@ import (
 	`path/filepath`
 
 	`github.com/dronestock/drone`
-	`github.com/storezhang/gfx`
 )
 
 func (p *plugin) keypair() (undo bool, err error) {
