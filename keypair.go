@@ -1,10 +1,11 @@
 package main
 
 import (
-	`os`
-	`path/filepath`
+	"os"
+	"path/filepath"
 
-	`github.com/dronestock/drone`
+	"github.com/dronestock/drone"
+	"github.com/goexl/gfx"
 )
 
 func (p *plugin) keypair() (undo bool, err error) {
