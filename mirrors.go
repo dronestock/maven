@@ -17,12 +17,12 @@ const (
 )
 
 func (p *plugin) writeMirrors(settings *etree.Element) {
-	if 0 == len(p.Mirrors) {
+	if 0 == len(p.mirrors()) {
 		return
 	}
 
 	mirrors := settings.CreateElement(keyMirrors)
-	for _, _mirror := range p._mirrors() {
+	for _, _mirror := range p.mirrors() {
 		mirror := mirrors.FindElementPath(etree.MustCompilePath(fmt.Sprintf(mirrorPathFormat, _mirror)))
 		if nil != mirror {
 			mirrors.RemoveChildAt(mirror.Index())

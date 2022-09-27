@@ -93,7 +93,7 @@ func (p *plugin) Fields() gox.Fields {
 	}
 }
 
-func (p *plugin) _mirrors() (mirrors []string) {
+func (p *plugin) mirrors() (mirrors []string) {
 	mirrors = make([]string, 0)
 	mirrors = append(mirrors, p.Mirrors...)
 	if p.Defaults {
