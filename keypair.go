@@ -1,8 +1,16 @@
 package main
 
+import (
+	"os"
+	"path/filepath"
+
+	"github.com/dronestock/drone"
+	"github.com/goexl/gfx"
+)
+
 func (p *plugin) keypair() (undo bool, err error) {
 	// 删除原来的密钥目录
-	/*if err = gfx.Delete(filepath.Join(os.Getenv(homeEnv), gpgHome)); nil != err {
+	if err = gfx.Delete(filepath.Join(os.Getenv(homeEnv), gpgHome)); nil != err {
 		return
 	}
 
@@ -21,7 +29,7 @@ func (p *plugin) keypair() (undo bool, err error) {
 		if nil != err {
 			return
 		}
-	}*/
+	}
 
 	return
 }
