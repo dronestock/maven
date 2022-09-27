@@ -104,6 +104,9 @@ func (p *plugin) passphrase() (passphrase string) {
 	if `` == strings.TrimSpace(passphrase) {
 		passphrase = gox.RandString(randLength)
 	}
+	if `` == p._passphrase {
+		p._passphrase = passphrase
+	}
 
 	return
 }
