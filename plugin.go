@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/dronestock/drone"
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
@@ -55,6 +57,7 @@ type plugin struct {
 	NexusPluginVersion string `default:"${PLUGIN_NEXUS_PLUGIN_VERSION=${NEXUS_PLUGIN_VERSION=1.6.3}}"`
 
 	__properties map[string]string
+	_passphrase  string
 }
 
 func newPlugin() drone.Plugin {
@@ -91,6 +94,18 @@ func (p *plugin) Fields() gox.Fields {
 	return []gox.Field{
 		field.String(`folder`, p.Source),
 	}
+}
+
+func (p *plugin) passphrase() (passphrase string) {
+	passphrase = p._passphrase
+	if `` == strings.TrimSpace(passphrase) {
+		passphrase = p.Gpg.Passphrase
+	}
+	if `` == strings.TrimSpace(passphrase) {
+		passphrase = gox.RandString(randLength)
+	}
+
+	return
 }
 
 func (p *plugin) mirrors() (mirrors []string) {

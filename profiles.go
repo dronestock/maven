@@ -1,10 +1,7 @@
 package main
 
 import (
-	"strings"
-
 	"github.com/beevik/etree"
-	"github.com/goexl/gox"
 )
 
 const (
@@ -34,9 +31,5 @@ func (p *plugin) writeProfiles(settings *etree.Element) {
 
 	properties := profile.CreateElement(keyProperties)
 	properties.CreateElement(keyGpgExecutable).SetText(xmlGpgExecutable)
-	passphrase := p.Gpg.Passphrase
-	if `` == strings.TrimSpace(passphrase) {
-		passphrase = gox.RandString(randLength)
-	}
-	properties.CreateElement(keyGpgPassphrase).SetText(passphrase)
+	properties.CreateElement(keyGpgPassphrase).SetText(p.passphrase())
 }

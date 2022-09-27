@@ -18,7 +18,7 @@ func (p *plugin) keypair() (undo bool, err error) {
 		args := []interface{}{
 			`--batch`,
 			`--passphrase`,
-			_repository.Password,
+			p.passphrase(),
 			`--quick-gen-key`,
 			_repository.Username,
 			`default`,
