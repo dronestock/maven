@@ -1,15 +1,15 @@
 package main
 
 import (
-	`path/filepath`
+	"path/filepath"
 
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 	"github.com/goexl/gfx"
 )
 
 func (p *plugin) pom() (undo bool, err error) {
 	filename := filepath.Join(p.Source, pomFilename)
-	if _,exists:=gfx.Exists(filename);!exists {
+	if _, exists := gfx.Exists(filename); !exists {
 		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
 			return
 		}
@@ -24,17 +24,15 @@ func (p *plugin) pom() (undo bool, err error) {
 	}
 
 	// 设置项目
-	project := p.project(doc)
-	// 设置坐标
-	p.setup(project)
+	project := p.writeProject(doc)
 	// 设置项目属性
-	p.properties(project)
+	p.writeProperties(project)
 	// 设置仓库
-	p.repositories(project)
+	p.writeRepositories(project)
 	// 设置发布仓库
-	p.distribution(project)
+	p.writeDistribution(project)
 	// 设置发布插件
-	p.plugins(project)
+	p.writePlugins(project)
 
 	// 写入文件
 	doc.Indent(xmlSpaces)

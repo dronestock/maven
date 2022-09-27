@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 	xmlPluginSource         = `attach-source`
 )
 
-func (p *plugin) source(plugins *etree.Element) {
+func (p *plugin) writeSource(plugins *etree.Element) {
 	sources := plugins.FindElementPath(etree.MustCompilePath(sourcePath))
 	if nil != sources {
 		plugins.RemoveChildAt(sources.Index())

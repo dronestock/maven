@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -11,8 +11,8 @@ const (
 	xmlPluginGpg         = `sign-artifacts`
 )
 
-func (p *plugin) sign(plugins *etree.Element) {
-	if `` == p.Password {
+func (p *plugin) writeSign(plugins *etree.Element) {
+	if 0 == len(p.Repositories) {
 		return
 	}
 

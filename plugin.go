@@ -1,11 +1,9 @@
 package main
 
 import (
-	`net/url`
-
-	`github.com/dronestock/drone`
-	`github.com/goexl/gox`
-	`github.com/goexl/gox/field`
+	"github.com/dronestock/drone"
+	"github.com/goexl/gox"
+	"github.com/goexl/gox/field"
 )
 
 type plugin struct {
@@ -15,11 +13,9 @@ type plugin struct {
 	Source string `default:"${PLUGIN_SOURCE=${SOURCE=.}}" validate:"required"`
 
 	// 仓库
-	Repository repository `default:"${PLUGIN_REPOSITORY=${REPOSITORY}}"`
-	// 用户名
-	Username string `default:"${PLUGIN_USERNAME=${USERNAME}}"`
-	// 密码
-	Password string `default:"${PLUGIN_PASSWORD=${PASSWORD}}"`
+	Repository *repository `default:"${PLUGIN_REPOSITORY=${REPOSITORY}}"`
+	// 仓库列表
+	Repositories []*repository `default:"${PLUGIN_REPOSITORIES=${REPOSITORIES}}"`
 
 	// 密钥
 	Gpg gpg `default:"${PLUGIN_GPG=${GPG}}"`
@@ -83,6 +79,9 @@ func (p *plugin) Steps() []*drone.Step {
 }
 
 func (p *plugin) Setup() (unset bool, err error) {
+	if nil != p.Repository {
+		p.Repositories = append(p.Repositories, p.Repository)
+	}
 	p.Parse(p.__properties, p.Properties...)
 
 	return
@@ -92,16 +91,6 @@ func (p *plugin) Fields() gox.Fields {
 	return []gox.Field{
 		field.String(`folder`, p.Source),
 	}
-}
-
-func (p *plugin) repositoryId(link string) (id string) {
-	if uri, err := url.Parse(link); nil != err {
-		id = gox.RandString(randLength)
-	} else {
-		id = uri.Host
-	}
-
-	return
 }
 
 func (p *plugin) _mirrors() (mirrors []string) {

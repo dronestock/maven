@@ -1,9 +1,9 @@
 package main
 
 import (
-	`os`
+	"os"
 
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 	localRepository            = `MAVEN_LOCAL_REPOSITORY`
 )
 
-func (p *plugin) localRepository(settings *etree.Element) {
+func (p *plugin) writeLocalRepository(settings *etree.Element) {
 	_repository := settings.SelectElement(keySettingsLocalRepository)
 	if nil == _repository {
 		_repository = settings.CreateElement(keySettingsLocalRepository)

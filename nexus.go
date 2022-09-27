@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -17,7 +17,7 @@ const (
 	xmlNexusUrl = `https://oss.sonatype.org/`
 )
 
-func (p *plugin) nexus(plugins *etree.Element) {
+func (p *plugin) writeNexus(plugins *etree.Element) {
 	nexus := plugins.FindElementPath(etree.MustCompilePath(nexusPath))
 	if nil != nexus {
 		plugins.RemoveChildAt(nexus.Index())

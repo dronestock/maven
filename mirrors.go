@@ -1,11 +1,11 @@
 package main
 
 import (
-	`fmt`
-	`net/url`
+	"fmt"
+	"net/url"
 
-	`github.com/beevik/etree`
-	`github.com/goexl/gox`
+	"github.com/beevik/etree"
+	"github.com/goexl/gox"
 )
 
 const (
@@ -16,7 +16,7 @@ const (
 	mirrorPathFormat = `mirror[url='%s']`
 )
 
-func (p *plugin) mirrors(settings *etree.Element) () {
+func (p *plugin) writeMirrors(settings *etree.Element) {
 	if 0 == len(p.Mirrors) {
 		return
 	}

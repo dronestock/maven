@@ -1,13 +1,11 @@
 package main
 
 import (
-	`strings`
-
-	`github.com/dronestock/drone`
+	"github.com/dronestock/drone"
 )
 
 func (p *plugin) deploy() (undo bool, err error) {
-	if undo = `` == strings.TrimSpace(p.Username) || `` == strings.TrimSpace(p.Password); undo {
+	if undo = 0 == len(p.Repositories); undo {
 		return
 	}
 

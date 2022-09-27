@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -23,7 +23,7 @@ const (
 	xmlPluginSign      = `sign`
 )
 
-func (p *plugin) plugins(project *etree.Element) {
+func (p *plugin) writePlugins(project *etree.Element) {
 	build := project.SelectElement(keyBuild)
 	if nil == build {
 		build = project.CreateElement(keyBuild)
@@ -34,13 +34,13 @@ func (p *plugin) plugins(project *etree.Element) {
 	}
 
 	// 设置打包
-	p.jar(plugins)
+	p.writeJar(plugins)
 	// 设置源码发布
-	p.source(plugins)
+	p.writeSource(plugins)
 	// 设置文档发布
-	p.doc(plugins)
+	p.writeDoc(plugins)
 	// 设置构件签名
-	p.sign(plugins)
+	p.writeSign(plugins)
 	// 设置发布
-	p.nexus(plugins)
+	p.writeNexus(plugins)
 }

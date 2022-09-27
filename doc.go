@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 	xmlPluginDoc         = `attach-javadocs`
 )
 
-func (p *plugin) doc(plugins *etree.Element) {
+func (p *plugin) writeDoc(plugins *etree.Element) {
 	docs := plugins.FindElementPath(etree.MustCompilePath(docPath))
 	if nil != docs {
 		plugins.RemoveChildAt(docs.Index())

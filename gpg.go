@@ -5,4 +5,6 @@ type gpg struct {
 	Server string `default:"hkp://keyserver.ubuntu.com" json:"server"`
 	// 过期时间
 	Expire string `default:"7d" json:"expire"`
+	// 密码
+	Passphrase string `json:"passphrase"`
 }

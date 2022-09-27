@@ -1,10 +1,10 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
-func (p *plugin) properties(project *etree.Element) {
+func (p *plugin) writeProperties(project *etree.Element) {
 	properties := project.SelectElement(keyProperties)
 	if nil == properties {
 		properties = project.CreateElement(keyProperties)

@@ -1,20 +1,20 @@
 package main
 
 import (
-	`os`
-	`path/filepath`
+	"os"
+	"path/filepath"
 
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 	"github.com/goexl/gfx"
 )
 
 func (p *plugin) global() (undo bool, err error) {
-	if undo = `` == p.Username || `` == p.Password; undo {
+	if undo = 0 == len(p.Repositories); undo {
 		return
 	}
 
 	filename := filepath.Join(os.Getenv(homeEnv), mavenHome, settingsFilename)
-	if _,exists:=gfx.Exists(filename);!exists {
+	if _, exists := gfx.Exists(filename); !exists {
 		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
 			return
 		}
@@ -31,15 +31,15 @@ func (p *plugin) global() (undo bool, err error) {
 	// 配置全局
 	settings := p.settings(doc)
 	// 本地仓库
-	p.localRepository(settings)
+	p.writeLocalRepository(settings)
 	// 组信息
-	p.groups(settings)
+	p.writeGroups(settings)
 	// 镜像
-	p.mirrors(settings)
+	p.writeMirrors(settings)
 	// 仓库
-	p.servers(settings)
+	p.writeServers(settings)
 	// 配置
-	p.profiles(settings)
+	p.writeProfiles(settings)
 
 	// 写入文件
 	doc.Indent(xmlSpaces)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -12,7 +12,7 @@ const (
 	xmlPluginPackage     = `package`
 )
 
-func (p *plugin) jar(plugins *etree.Element) {
+func (p *plugin) writeJar(plugins *etree.Element) {
 	jar := plugins.FindElementPath(etree.MustCompilePath(jarPath))
 	if nil != jar {
 		plugins.RemoveChildAt(jar.Index())

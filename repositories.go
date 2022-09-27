@@ -1,9 +1,9 @@
 package main
 
 import (
-	`fmt`
+	"fmt"
 
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -17,19 +17,19 @@ const (
 	centralPluginFormat     = `pluginRepository[url='%s']`
 )
 
-func (p *plugin) repositories(project *etree.Element) {
+func (p *plugin) writeRepositories(project *etree.Element) {
 	repositories := project.SelectElement(keyRepositories)
 	if nil == repositories {
 		repositories = project.CreateElement(keyRepositories)
 	}
 
-	repository := repositories.FindElementPath(etree.MustCompilePath(fmt.Sprintf(centralRepositoryFormat, xmlCentralUrl)))
-	if nil == repository {
-		repository = repositories.CreateElement(keyRepository)
-		repository.CreateElement(keyId).SetText(xmlCentral)
-		repository.CreateElement(keyUrl).SetText(xmlCentralUrl)
-		repository.CreateElement(keyReleases).CreateElement(keyEnabled).SetText(xmlTrue)
-		repository.CreateElement(keySnapshots).CreateElement(keyEnabled).SetText(xmlTrue)
+	_repository := repositories.FindElementPath(etree.MustCompilePath(fmt.Sprintf(centralRepositoryFormat, xmlCentralUrl)))
+	if nil == _repository {
+		_repository = repositories.CreateElement(keyRepository)
+		_repository.CreateElement(keyId).SetText(xmlCentral)
+		_repository.CreateElement(keyUrl).SetText(xmlCentralUrl)
+		_repository.CreateElement(keyReleases).CreateElement(keyEnabled).SetText(xmlTrue)
+		_repository.CreateElement(keySnapshots).CreateElement(keyEnabled).SetText(xmlTrue)
 	}
 
 	plugins := project.SelectElement(keyPluginRepositories)

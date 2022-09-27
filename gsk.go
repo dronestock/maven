@@ -1,23 +1,26 @@
 package main
 
 import (
-	`strings`
-
-	`github.com/dronestock/drone`
+	"github.com/dronestock/drone"
 )
 
 func (p *plugin) gsk() (undo bool, err error) {
-	if undo = `` == strings.TrimSpace(p.Username) || `` == strings.TrimSpace(p.Password); undo {
+	if undo = 0 == len(p.Repositories); undo {
 		return
 	}
 
-	args := []interface{}{
-		`--server`,
-		p.Gpg.Server,
-		`--username`,
-		p.Username,
+	for _, _repository := range p.Repositories {
+		args := []interface{}{
+			`--server`,
+			p.Gpg.Server,
+			`--username`,
+			_repository.Username,
+		}
+		err = p.Exec(gskExe, drone.Args(args...), drone.Dir(p.Source))
+		if nil != err {
+			return
+		}
 	}
-	err = p.Exec(gskExe, drone.Args(args...), drone.Dir(p.Source))
 
 	return
 }

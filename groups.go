@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 	xmlPlugins = `org.sonatype.plugins`
 )
 
-func (p *plugin) groups(settings *etree.Element) {
+func (p *plugin) writeGroups(settings *etree.Element) {
 	groups := settings.CreateElement(keySettingsGroups)
 	if nil != groups {
 		group := groups.CreateElement(keySettingsGroup)

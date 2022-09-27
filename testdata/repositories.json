@@ -1,0 +1,11 @@
+[{
+    "release": "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2",
+    "snapshot": "https://s01.oss.sonatype.org/content/writeRepositories/snapshots",
+    "username": "test",
+    "password": "test"
+},{
+    "release": "https://maven.itcoursee.com/service/local/staging/deploy/maven2",
+    "snapshot": "https://maven.itcoursee.com/content/writeRepositories/snapshots",
+    "username": "test",
+    "password": "test"
+}]
