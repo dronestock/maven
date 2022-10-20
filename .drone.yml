@@ -23,7 +23,7 @@ steps:
     image: ccr.ccs.tencentyun.com/dronestock/docker
     privileged: true
     volumes:
-      - name: cache
+      - name: docker
         path: /var/lib/docker
     environment:
       PASSWORD_DOCKER:
