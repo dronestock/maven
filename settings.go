@@ -1,7 +1,7 @@
 package main
 
 import (
-	`github.com/beevik/etree`
+	"github.com/beevik/etree"
 )
 
 const keySettings = `settings`
