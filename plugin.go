@@ -119,15 +119,36 @@ func (p *plugin) mirrors() (mirrors []string) {
 	return
 }
 
-func (p *plugin) _properties() (properties map[string]string) {
+func (p *plugin) properties() (properties map[string]string) {
 	properties = p.Properties
 	if !p.Defaults {
 		return
 	}
 
+	if nil == properties {
+		properties = make(map[string]string)
+	}
 	for key, value := range defaultProperties {
 		if _, ok := properties[key]; !ok {
 			properties[key] = value
+		}
+	}
+
+	return
+}
+
+func (p *plugin) defines() (defines map[string]string) {
+	defines = p.Defines
+	if !p.Defaults {
+		return
+	}
+
+	if nil == defines {
+		defines = make(map[string]string)
+	}
+	for key, value := range defaultDefines {
+		if _, ok := defines[key]; !ok {
+			defines[key] = value
 		}
 	}
 

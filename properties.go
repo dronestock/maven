@@ -10,7 +10,7 @@ func (p *plugin) writeProperties(project *etree.Element) {
 		properties = project.CreateElement(keyProperties)
 	}
 
-	for key, value := range p._properties() {
+	for key, value := range p.properties() {
 		property := properties.SelectElement(key)
 		if nil == property {
 			property = properties.CreateElement(key)

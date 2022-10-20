@@ -6,6 +6,11 @@ var (
 		`maven.compiler.target`: `17`,
 		`java.version`:          `17`,
 	}
+	defaultDefines = map[string]string{
+		`maven.wagon.http.ssl.insecure`:              `true`,
+		`maven.wagon.http.ssl.allowall`:              `true`,
+		`maven.wagon.http.ssl.ignore.validity.dates`: `true`,
+	}
 	defaultMirrors = []string{
 		`https://mirrors.huaweicloud.com/repository/maven/`,
 		`https://maven.aliyun.com/repository/public/`,
