@@ -15,7 +15,7 @@ func (p *plugin) deploy() (undo bool, err error) {
 		`deploy`,
 	}
 	// 额外参数
-	for key, value := range p.Defines {
+	for key, value := range p.defines() {
 		args = append(args, `--define`, fmt.Sprintf(`%s=%s`, key, value))
 	}
 	// 打印更多日志

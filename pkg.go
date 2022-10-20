@@ -27,7 +27,7 @@ func (p *plugin) pkg() (undo bool, err error) {
 		args = append(args, `--define`, `maven.skip.test=true`)
 	}
 	// 额外参数
-	for key, value := range p.Defines {
+	for key, value := range p.defines() {
 		args = append(args, `--define`, fmt.Sprintf(`%s=%s`, key, value))
 	}
 
