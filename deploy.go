@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/dronestock/drone"
 )
 
@@ -11,8 +13,10 @@ func (p *plugin) deploy() (undo bool, err error) {
 
 	args := []interface{}{
 		`deploy`,
-		`--define`, `maven.wagon.http.ssl.insecure=true`,
-		`--define`, `maven.wagon.http.ssl.allowall=true`,
+	}
+	// 额外参数
+	for key, value := range p.Defines {
+		args = append(args, `--define`, fmt.Sprintf(`%s=%s`, key, value))
 	}
 	// 打印更多日志
 	if p.Verbose {

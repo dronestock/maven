@@ -32,7 +32,9 @@ type plugin struct {
 	Packaging string `default:"${PLUGIN_PACKAGING=${PACKAGING=jar}}" validate:"oneof=jar war"`
 
 	// 额外属性
-	Properties []string `default:"${PLUGIN_PROPERTIES=${PROPERTIES}}"`
+	Properties map[string]string `default:"${PLUGIN_PROPERTIES=${PROPERTIES}}"`
+	// 参数
+	Defines map[string]string `default:"${PLUGIN_DEFINES=${DEFINES}}"`
 
 	// 镜像加速列表
 	Mirrors []string `default:"${PLUGIN_MIRRORS=${MIRRORS}}"`
@@ -56,14 +58,11 @@ type plugin struct {
 	// 发布仓库版本
 	NexusPluginVersion string `default:"${PLUGIN_NEXUS_PLUGIN_VERSION=${NEXUS_PLUGIN_VERSION=1.6.3}}"`
 
-	__properties map[string]string
-	_passphrase  string
+	_passphrase string
 }
 
 func newPlugin() drone.Plugin {
-	return &plugin{
-		__properties: make(map[string]string),
-	}
+	return new(plugin)
 }
 
 func (p *plugin) Config() drone.Config {
@@ -85,7 +84,6 @@ func (p *plugin) Setup() (unset bool, err error) {
 	if nil != p.Repository {
 		p.Repositories = append(p.Repositories, p.Repository)
 	}
-	p.Parse(p.__properties, p.Properties...)
 
 	return
 }
@@ -122,7 +120,7 @@ func (p *plugin) mirrors() (mirrors []string) {
 }
 
 func (p *plugin) _properties() (properties map[string]string) {
-	properties = p.__properties
+	properties = p.Properties
 	if !p.Defaults {
 		return
 	}
