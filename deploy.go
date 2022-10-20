@@ -11,8 +11,8 @@ func (p *plugin) deploy() (undo bool, err error) {
 
 	args := []interface{}{
 		`deploy`,
-		`-Dmaven.wagon.http.ssl.insecure`, `true`,
-		`-Dmaven.wagon.http.ssl.allowall`, `true`,
+		`--define`, `maven.wagon.http.ssl.insecure=true`,
+		`--define`, `maven.wagon.http.ssl.allowall=true`,
 	}
 	// 打印更多日志
 	if p.Verbose {
