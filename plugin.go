@@ -84,6 +84,9 @@ func (p *plugin) Setup() (unset bool, err error) {
 	if nil != p.Repository {
 		p.Repositories = append(p.Repositories, p.Repository)
 	}
+	if nil == p.Defines {
+		p.Defines = make(map[string]string)
+	}
 
 	return
 }
@@ -131,24 +134,6 @@ func (p *plugin) properties() (properties map[string]string) {
 	for key, value := range defaultProperties {
 		if _, ok := properties[key]; !ok {
 			properties[key] = value
-		}
-	}
-
-	return
-}
-
-func (p *plugin) defines() (defines map[string]string) {
-	defines = p.Defines
-	if !p.Defaults {
-		return
-	}
-
-	if nil == defines {
-		defines = make(map[string]string)
-	}
-	for key, value := range defaultDefines {
-		if _, ok := defines[key]; !ok {
-			defines[key] = value
 		}
 	}
 
