@@ -1,11 +1,5 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/dronestock/drone"
-)
-
 func (p *plugin) pkg() (undo bool, err error) {
 	args := make([]interface{}, 0)
 
@@ -26,10 +20,6 @@ func (p *plugin) pkg() (undo bool, err error) {
 	if !p.Test {
 		args = append(args, `--define`, `maven.skip.test=true`)
 	}
-	// 额外参数
-	for key, value := range p.defines() {
-		args = append(args, `--define`, fmt.Sprintf(`%s=%s`, key, value))
-	}
 
 	// 打印更多日志
 	if p.Verbose {
@@ -37,7 +27,7 @@ func (p *plugin) pkg() (undo bool, err error) {
 	}
 
 	// 执行命令
-	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Source))
+	err = p.mvn(args...)
 
 	return
 }

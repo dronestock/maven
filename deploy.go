@@ -1,22 +1,12 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/dronestock/drone"
-)
-
 func (p *plugin) deploy() (undo bool, err error) {
 	if undo = 0 == len(p.Repositories); undo {
 		return
 	}
 
-	args := []interface{}{
+	args := []any{
 		`deploy`,
-	}
-	// 额外参数
-	for key, value := range p.defines() {
-		args = append(args, `--define`, fmt.Sprintf(`%s=%s`, key, value))
 	}
 	// 打印更多日志
 	if p.Verbose {
@@ -24,7 +14,7 @@ func (p *plugin) deploy() (undo bool, err error) {
 	}
 
 	// 执行命令
-	err = p.Exec(exe, drone.Args(args...), drone.Dir(p.Source))
+	err = p.mvn(args...)
 
 	return
 }
