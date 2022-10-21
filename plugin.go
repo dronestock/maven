@@ -56,7 +56,7 @@ type plugin struct {
 	// 签名插件版本
 	GpgPluginVersion string `default:"${PLUGIN_GPG_PLUGIN_VERSION=${GPG_PLUGIN_VERSION=3.0.1}}"`
 	// 发布仓库版本
-	NexusPluginVersion string `default:"${PLUGIN_NEXUS_PLUGIN_VERSION=${NEXUS_PLUGIN_VERSION=1.6.3}}"`
+	NexusPluginVersion string `default:"${PLUGIN_NEXUS_PLUGIN_VERSION=${NEXUS_PLUGIN_VERSION=1.6.13}}"`
 
 	_passphrase string
 }
