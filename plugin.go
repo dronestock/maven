@@ -129,9 +129,7 @@ func (p *plugin) properties() (properties map[string]string) {
 		properties = make(map[string]string)
 	}
 	for key, value := range defaultProperties {
-		if _, ok := properties[key]; !ok {
-			properties[key] = value
-		}
+		properties[key] = value
 	}
 
 	return
