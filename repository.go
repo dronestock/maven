@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/goexl/gox"
 )
@@ -17,17 +18,23 @@ type repository struct {
 	Username string `json:"username" validate:"required"`
 	// 密码
 	Password string `json:"password" validate:"required"`
+	// 是否为私服，不对外开放
+	Private bool `default:"true" json:"private"`
 }
 
 func (r *repository) snapshotId() string {
-	return r._id(r.Snapshot)
+	return r.id(r.Snapshot)
 }
 
 func (r *repository) releaseId() string {
-	return r._id(r.Release)
+	return r.id(r.Release)
 }
 
-func (r *repository) _id(link string) (id string) {
+func (r *repository) private() bool {
+	return !strings.HasPrefix(r.Snapshot, mavenRepositoryHost) || r.Private
+}
+
+func (r *repository) id(link string) (id string) {
 	if uri, err := url.Parse(link); nil != err {
 		id = gox.RandString(randLength)
 	} else {

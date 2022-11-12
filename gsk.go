@@ -5,7 +5,7 @@ import (
 )
 
 func (p *plugin) gsk() (undo bool, err error) {
-	if undo = 0 == len(p.Repositories); undo {
+	if undo = p.private(); undo {
 		return
 	}
 
