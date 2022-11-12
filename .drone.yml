@@ -32,11 +32,13 @@ steps:
         from_secret: password_tencentyun_ccr
     settings:
       repository: dronestock/maven
-
-  - name: 测试
-    image: ccr.ccs.tencentyun.com/dronestock/git
-    commands:
-      - mvn
+      registries:
+        - username: dronestock
+          password: $${PASSWORD_DOCKER}
+        - hostname: ccr.ccs.tencentyun.com
+          username: "160290688"
+          password: $${PASSWORD_CCR}
+          required: true
 
 
 volumes:
