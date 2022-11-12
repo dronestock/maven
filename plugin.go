@@ -71,8 +71,11 @@ func (p *plugin) Config() drone.Config {
 
 func (p *plugin) Steps() []*drone.Step {
 	return []*drone.Step{
+		// 执行出错具有不可重复性，不需要重试
 		drone.NewStep(p.keypair, drone.Name(`生成密钥`), drone.Interrupt()),
+		// 执行出错具有不可重复性，不需要重试
 		drone.NewStep(p.global, drone.Name(`写入全局配置`), drone.Interrupt()),
+		// 执行出错具有不可重复性，不需要重试
 		drone.NewStep(p.pom, drone.Name(`修改项目配置`), drone.Interrupt()),
 		drone.NewStep(p.pkg, drone.Name(`打包`)),
 		drone.NewStep(p.gsk, drone.Name(`上传密钥到服务器`)),
