@@ -20,13 +20,21 @@ Drone持续集成Maven插件，功能
 非常简单，只需要在`.drone.yml`里增加配置
 
 ```yaml
-- name: 发布到Maven仓库
+steps:
+  - name: 发布到Maven仓库
   image: dronestock/maven
   settings:
     username: xxx
     password: xxx
     token: xxx
 ```
+
+
+更多使用教程，请参考[使用文档](https://www.dronestock.tech/plugin/stock/maven)
+
+## 交流
+
+![微信群](https://www.dronestock.tech/communication/wxwork.jpg)
 
 ## 捐助
 
@@ -36,4 +44,5 @@ Drone持续集成Maven插件，功能
 ## 感谢Jetbrains
 
 本项目通过`Jetbrains开源许可IDE`编写源代码，特此感谢
-[![Jetbrains图标](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)](https://www.jetbrains.com/?from=dronestock/maven)
+
+[![Jetbrains图标](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://www.jetbrains.com/?from=dronestock/maven)
