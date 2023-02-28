@@ -1,6 +1,9 @@
 package main
 
 const (
+	java  = "JAVA"
+	certs = "/lib/security/cacerts"
+
 	exe         = "mvn"
 	gpgExe      = "gpg"
 	gskExe      = "gsk"
