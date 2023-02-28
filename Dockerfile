@@ -11,7 +11,7 @@ FROM maven:3.8.6 AS maven
 
 
 # 打包真正的镜像
-FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.16.2
+FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.17.2
 
 
 LABEL author="storezhang<华寅>" \
