@@ -5,7 +5,7 @@ RUN mv /opt/openjdk-* /opt/openjdk
 
 
 
-FROM maven:3.8.6 AS maven
+FROM maven:3.9.0 AS maven
 
 
 
