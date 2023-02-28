@@ -22,7 +22,7 @@ func (p *plugin) mvn(args ...any) (err error) {
 	}
 
 	// 禁止安全错误
-	certs := filepath.Join(os.Getenv(java), certs)
+	certs := filepath.Join(os.Getenv(javaHome), certs)
 	args = append(args, "-Djavax.net.ssl.trustStore", certs)
 	args = append(args, "-Djavax.net.ssl.trustAnchors", certs)
 
