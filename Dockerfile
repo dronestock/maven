@@ -15,10 +15,10 @@ FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.16.2
 
 
 LABEL author="storezhang<华寅>" \
-    email="storezhang@gmail.com" \
-    qq="160290688" \
-    wechat="storezhang" \
-    description="Drone持续集成Maven插件，支持测试、打包、发布等常规功能"
+email="storezhang@gmail.com" \
+qq="160290688" \
+wechat="storezhang" \
+description="Drone持续集成Maven插件，支持测试、打包、发布等常规功能"
 
 
 ENV JAVA_HOME /opt/openjdk

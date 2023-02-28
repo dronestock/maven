@@ -1,4 +1,5 @@
 # maven
+
 [![编译状态](https://github.ruijc.com:20443/api/badges/dronestock/maven/status.svg)](https://github.ruijc.com:20443/dronestock/maven)
 [![Golang质量](https://goreportcard.com/badge/github.com/dronestock/maven)](https://goreportcard.com/report/github.com/dronestock/maven)
 ![版本](https://img.shields.io/github/go-mod/go-version/dronestock/maven)
@@ -28,7 +29,6 @@ steps:
     password: xxx
     token: xxx
 ```
-
 
 更多使用教程，请参考[使用文档](https://www.dronestock.tech/plugin/stock/maven)
 

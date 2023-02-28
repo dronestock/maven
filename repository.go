@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/goexl/gox"
+	"github.com/goexl/gox/rand"
 )
 
 type repository struct {
@@ -36,7 +36,7 @@ func (r *repository) private() bool {
 
 func (r *repository) id(link string) (id string) {
 	if uri, err := url.Parse(link); nil != err {
-		id = gox.RandString(randLength)
+		id = rand.New().String().Length(randLength).Generate()
 	} else {
 		id = uri.Host
 	}

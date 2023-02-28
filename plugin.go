@@ -6,6 +6,7 @@ import (
 	"github.com/dronestock/drone"
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
+	"github.com/goexl/gox/rand"
 )
 
 type plugin struct {
@@ -69,17 +70,17 @@ func (p *plugin) Config() drone.Config {
 	return p
 }
 
-func (p *plugin) Steps() []*drone.Step {
-	return []*drone.Step{
+func (p *plugin) Steps() drone.Steps {
+	return drone.Steps{
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(p.keypair, drone.Name(`生成密钥`), drone.Interrupt()),
+		drone.NewStep(newKeypairStep(p)).Name("生成密钥").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(p.global, drone.Name(`写入全局配置`), drone.Interrupt()),
+		drone.NewStep(newGlobalStep(p)).Name("写入全局配置").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(p.pom, drone.Name(`修改项目配置`), drone.Interrupt()),
-		drone.NewStep(p.pkg, drone.Name(`打包`)),
-		drone.NewStep(p.gsk, drone.Name(`上传密钥到服务器`)),
-		drone.NewStep(p.deploy, drone.Name(`发布到仓库`)),
+		drone.NewStep(newPomStep(p)).Name("修改项目配置").Interrupt().Build(),
+		drone.NewStep(newPackageStep(p)).Name("打包").Build(),
+		drone.NewStep(newGskStep(p)).Name("上传密钥到服务器").Build(),
+		drone.NewStep(newDeployStep(p)).Name("发布到仓库").Build(),
 	}
 }
 
@@ -91,21 +92,21 @@ func (p *plugin) Setup() (unset bool, err error) {
 	return
 }
 
-func (p *plugin) Fields() gox.Fields {
-	return []gox.Field{
-		field.String(`folder`, p.Source),
+func (p *plugin) Fields() gox.Fields[any] {
+	return gox.Fields[any]{
+		field.New("folder", p.Source),
 	}
 }
 
 func (p *plugin) passphrase() (passphrase string) {
 	passphrase = p._passphrase
-	if `` == strings.TrimSpace(passphrase) {
+	if "" == strings.TrimSpace(passphrase) {
 		passphrase = p.Gpg.Passphrase
 	}
-	if `` == strings.TrimSpace(passphrase) {
-		passphrase = gox.RandString(randLength)
+	if "" == strings.TrimSpace(passphrase) {
+		passphrase = rand.New().String().Length(randLength).Generate()
 	}
-	if `` == p._passphrase {
+	if "" == p._passphrase {
 		p._passphrase = passphrase
 	}
 
@@ -115,7 +116,7 @@ func (p *plugin) passphrase() (passphrase string) {
 func (p *plugin) mirrors() (mirrors []string) {
 	mirrors = make([]string, 0)
 	mirrors = append(mirrors, p.Mirrors...)
-	if p.Defaults {
+	if *p.Defaults {
 		mirrors = append(mirrors, defaultMirrors...)
 	}
 
@@ -124,7 +125,7 @@ func (p *plugin) mirrors() (mirrors []string) {
 
 func (p *plugin) properties() (properties map[string]string) {
 	properties = p.Properties
-	if !p.Defaults {
+	if !*p.Defaults {
 		return
 	}
 
@@ -142,7 +143,7 @@ func (p *plugin) properties() (properties map[string]string) {
 
 func (p *plugin) defines() (defines map[string]string) {
 	defines = p.Defines
-	if !p.Defaults {
+	if !*p.Defaults {
 		return
 	}
 
