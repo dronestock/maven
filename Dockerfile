@@ -27,6 +27,7 @@ ENV MAVEN_HOME /usr/share/maven/
 
 # 复制文件
 COPY --from=jdk ${JAVA_HOME} ${JAVA_HOME}
+COPY --from=jdk /etc/ssl/certs/java/cacerts /etc/ssl/certs/java/cacerts
 COPY --from=maven ${MAVEN_HOME} ${MAVEN_HOME}
 COPY docker /
 COPY maven /bin
@@ -47,9 +48,6 @@ RUN set -ex \
     && echo "/usr/local/lib" >> ${LD_PATH} \
     && echo "${JAVA_HOME}/lib/default" >> ${LD_PATH} \
     && echo "${JAVA_HOME}/lib/server" >> ${LD_PATH} \
-    # 修复找不到SSL证书问题
-    && apk --no-cache add ca-certificates \
-    && update-ca-certificates -f \
     \
     \
     \
