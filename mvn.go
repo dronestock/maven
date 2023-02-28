@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
@@ -20,11 +18,6 @@ func (p *plugin) mvn(args ...any) (err error) {
 	for key, value := range p.defines() {
 		args = append(args, "--define", fmt.Sprintf("%s=%s", key, value))
 	}
-
-	// 禁止安全错误
-	certs := filepath.Join(os.Getenv(javaHome), certs)
-	args = append(args, "-Djavax.net.ssl.trustStore", certs)
-	args = append(args, "-Djavax.net.ssl.trustAnchors", certs)
 
 	if err = p.Command(exe).Args(args...).Dir(p.Source).Exec(); nil != err {
 		p.Error("Maven命令执行出错", fields.Add(field.Error(err))...)

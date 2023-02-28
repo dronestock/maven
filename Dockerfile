@@ -47,6 +47,9 @@ RUN set -ex \
     && echo "/usr/local/lib" >> ${LD_PATH} \
     && echo "${JAVA_HOME}/lib/default" >> ${LD_PATH} \
     && echo "${JAVA_HOME}/lib/server" >> ${LD_PATH} \
+    # 修复找不到SSL证书问题
+    && rm /etc/ssl/certs/java/cacerts \
+    && update-ca-certificates -f \
     \
     \
     \
