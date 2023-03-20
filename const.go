@@ -1,6 +1,8 @@
 package main
 
 const (
+	equal = "="
+
 	exe         = "mvn"
 	gpgExe      = "gpg"
 	gskExe      = "gsk"

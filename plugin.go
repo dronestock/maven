@@ -84,7 +84,7 @@ func (p *plugin) Steps() drone.Steps {
 	}
 }
 
-func (p *plugin) Setup() (unset bool, err error) {
+func (p *plugin) Setup() (err error) {
 	if nil != p.Repository {
 		p.Repositories = append(p.Repositories, p.Repository)
 	}
@@ -104,7 +104,7 @@ func (p *plugin) passphrase() (passphrase string) {
 		passphrase = p.Gpg.Passphrase
 	}
 	if "" == strings.TrimSpace(passphrase) {
-		passphrase = rand.New().String().Length(randLength).Generate()
+		passphrase = rand.New().String().Length(randLength).Build().Generate()
 	}
 	if "" == p._passphrase {
 		p._passphrase = passphrase

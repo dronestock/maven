@@ -121,7 +121,7 @@ func (g *stepGlobal) writeMirrors(settings *etree.Element) {
 			mirrors.RemoveChildAt(mirror.Index())
 		}
 
-		id := rand.New().String().Length(randLength).Generate()
+		id := rand.New().String().Length(randLength).Build().Generate()
 		if host, err := url.Parse(_mirror); nil == err {
 			id = host.Hostname()
 		}

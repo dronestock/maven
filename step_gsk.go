@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 
+	"github.com/goexl/gox/args"
 	"github.com/goexl/gox/field"
 )
 
@@ -38,13 +39,10 @@ func (g *stepGsk) gsk(_ context.Context, repository *repository, wg *sync.WaitGr
 	// 任何情况下，都必须调用完成方法
 	defer wg.Done()
 
-	args := []any{
-		"--server",
-		g.Gpg.Server,
-		"--username",
-		repository.Username,
-	}
-	if ee := g.Command(gskExe).Args(args...).Dir(g.Source).Exec(); nil != ee {
+	builder := args.New().Build()
+	builder.Args("server", g.Gpg.Server)
+	builder.Args("username", repository.Username)
+	if _, ee := g.Command(gskExe).Args(builder.Build()).Dir(g.Source).Build().Exec(); nil != ee {
 		*err = ee
 		g.Warn("生成密钥出错", field.New("repository", repository))
 	}

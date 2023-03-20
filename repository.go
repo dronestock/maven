@@ -36,7 +36,7 @@ func (r *repository) private() bool {
 
 func (r *repository) id(link string) (id string) {
 	if uri, err := url.Parse(link); nil != err {
-		id = rand.New().String().Length(randLength).Generate()
+		id = rand.New().String().Length(randLength).Build().Generate()
 	} else {
 		id = uri.Host
 	}

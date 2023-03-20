@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+
+	"github.com/goexl/gox/args"
 )
 
 type stepPackage struct {
@@ -19,33 +21,32 @@ func (p *stepPackage) Runnable() bool {
 }
 
 func (p *stepPackage) Run(_ context.Context) (err error) {
-	args := make([]any, 0)
-
+	builder := args.New().Build()
 	// 清理
 	if p.Clean {
-		args = append(args, "clean")
+		builder.Subcommand("clean")
 	}
 
 	// 测试
 	if p.Test {
-		args = append(args, "test")
+		builder.Subcommand("test")
 	}
 
 	// 打包
-	args = append(args, "package")
+	builder.Subcommand("package")
 
 	// 测试参数
 	if !p.Test {
-		args = append(args, "--define", "maven.skip.test=true")
+		builder.Flag("define").Add("maven.skip.test=true")
 	}
 
 	// 打印更多日志
 	if p.Verbose {
-		args = append(args, "-X")
+		builder.Flag("X")
 	}
 
 	// 执行命令
-	err = p.mvn(args...)
+	err = p.mvn(builder)
 
 	return
 }

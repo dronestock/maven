@@ -4,8 +4,20 @@ FROM openjdk:19-alpine AS jdk
 RUN mv /opt/openjdk-* /opt/openjdk
 
 
-
 FROM maven:3.9.0 AS maven
+
+FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.17.2 AS builder
+
+ENV JAVA_HOME /opt/openjdk
+ENV MAVEN_HOME /usr/share/maven/
+
+
+# 复制文件
+COPY --from=jdk ${JAVA_HOME} /docker/${JAVA_HOME}
+COPY --from=jdk /etc/ssl/certs/java/cacerts /docker/etc/ssl/certs/java/cacerts
+COPY --from=maven ${MAVEN_HOME} /docker/${MAVEN_HOME}
+COPY docker /docker
+COPY maven /docker/usr/local/bin
 
 
 
@@ -15,22 +27,14 @@ FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.17.2
 
 
 LABEL author="storezhang<华寅>" \
-email="storezhang@gmail.com" \
-qq="160290688" \
-wechat="storezhang" \
-description="Drone持续集成Maven插件，支持测试、打包、发布等常规功能"
-
-
-ENV JAVA_HOME /opt/openjdk
-ENV MAVEN_HOME /usr/share/maven/
+    email="storezhang@gmail.com" \
+    qq="160290688" \
+    wechat="storezhang" \
+    description="Drone持续集成Maven插件，支持测试、打包、发布等常规功能"
 
 
 # 复制文件
-COPY --from=jdk ${JAVA_HOME} ${JAVA_HOME}
-COPY --from=jdk /etc/ssl/certs/java/cacerts /etc/ssl/certs/java/cacerts
-COPY --from=maven ${MAVEN_HOME} ${MAVEN_HOME}
-COPY docker /
-COPY maven /bin
+COPY --from=builder /docker /
 
 
 RUN set -ex \
@@ -52,8 +56,8 @@ RUN set -ex \
     \
     \
     # 增加执行权限
-    && chmod +x /bin/maven \
-    && chmod +x /usr/bin/gsk \
+    && chmod +x /usr/local/bin/maven \
+    && chmod +x /usr/local/bin/gsk \
     \
     \
     \
@@ -62,7 +66,7 @@ RUN set -ex \
 
 
 # 执行命令
-ENTRYPOINT /bin/maven
+ENTRYPOINT /usr/local/bin/maven
 
 
 # 配置环境变量，配置Java主目录和Maven主目录以及Java和Maven的快捷方式

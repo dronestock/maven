@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/goexl/gfx"
+	"github.com/goexl/gox/args"
 	"github.com/goexl/gox/field"
 )
 
@@ -46,17 +47,12 @@ func (k *stepKeypair) make(_ context.Context, repository *repository, wg *sync.W
 	// 任何情况下，都必须调用完成方法
 	defer wg.Done()
 
-	args := []any{
-		"--batch",
-		"--passphrase",
-		k.passphrase(),
-		"--quick-gen-key",
-		repository.Username,
-		"default",
-		"default",
-		k.Gpg.Expire,
-	}
-	if ee := k.Command(gpgExe).Args(args...).Dir(k.Source).Exec(); nil != ee {
+	builder := args.New().Build()
+	builder.Subcommand("batch")
+	builder.Args("passphrase", k.passphrase())
+	builder.Args("quick-gen-key", repository.Username)
+	builder.Subcommand("default", "default", k.Gpg.Expire)
+	if _, ee := k.Command(gpgExe).Args(builder.Build()).Dir(k.Source).Build().Exec(); nil != ee {
 		*err = ee
 		k.Warn("生成密钥出错", field.New("repository", repository))
 	}

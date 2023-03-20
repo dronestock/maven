@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+
+	"github.com/goexl/gox/args"
 )
 
 type stepDeploy struct {
@@ -19,16 +21,15 @@ func (d *stepDeploy) Runnable() bool {
 }
 
 func (d *stepDeploy) Run(ctx context.Context) (err error) {
-	args := []any{
-		"deploy",
-	}
+	builder := args.New().Build()
+	builder.Subcommand("deploy")
 	// 打印更多日志
 	if d.Verbose {
-		args = append(args, "-X")
+		builder.Flag("X")
 	}
 
 	// 执行命令
-	err = d.mvn(args...)
+	err = d.mvn(builder)
 
 	return
 }
