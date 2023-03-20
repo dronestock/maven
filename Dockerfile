@@ -1,15 +1,19 @@
-FROM openjdk:19-alpine AS jdk
+ARG JAVA_HOME=/opt/openjdk
+ARG MAVEN_HOME=/usr/share/maven/
+
+
+FROM dockerproxy.com/library/openjdk:19-alpine AS jdk
 
 # 方便环境变量的设置
 RUN mv /opt/openjdk-* /opt/openjdk
 
 
-FROM maven:3.9.0 AS maven
+FROM dockerproxy.com/library/maven:3.9.0 AS maven
 
 FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.17.2 AS builder
 
-ENV JAVA_HOME /opt/openjdk
-ENV MAVEN_HOME /usr/share/maven/
+ARG JAVA_HOME
+ARG MAVEN_HOME
 
 
 # 复制文件
@@ -69,6 +73,8 @@ RUN set -ex \
 ENTRYPOINT /usr/local/bin/maven
 
 
+ARG JAVA_HOME
+ARG MAVEN_HOME
 # 配置环境变量，配置Java主目录和Maven主目录以及Java和Maven的快捷方式
 ENV JAVA_OPTS ""
 ENV JAVA /var/lib/java
