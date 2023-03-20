@@ -48,10 +48,10 @@ func (k *stepKeypair) make(_ context.Context, repository *repository, wg *sync.W
 	defer wg.Done()
 
 	builder := args.New().Build()
-	builder.Subcommand("batch")
+	builder.Flag("batch")
 	builder.Args("passphrase", k.passphrase())
 	builder.Args("quick-gen-key", repository.Username)
-	builder.Subcommand("default", "default", k.Gpg.Expire)
+	builder.Add("default", "default", k.Gpg.Expire)
 	if _, ee := k.Command(gpgExe).Args(builder.Build()).Dir(k.Source).Build().Exec(); nil != ee {
 		*err = ee
 		k.Warn("生成密钥出错", field.New("repository", repository))
