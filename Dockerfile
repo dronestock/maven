@@ -8,7 +8,7 @@ FROM dockerproxy.com/library/openjdk:19-alpine AS jdk
 RUN mv /opt/openjdk-* /opt/openjdk
 
 
-FROM dockerproxy.com/library/maven:3.9.0 AS maven
+FROM dockerproxy.com/library/maven:3.9.1 AS maven
 
 FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.17.2 AS builder
 
