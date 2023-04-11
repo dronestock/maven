@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"os"
-	"path/filepath"
 	"sync"
 
 	"github.com/goexl/gfx"
@@ -27,14 +25,14 @@ func (k *stepKeypair) Runnable() bool {
 
 func (k *stepKeypair) Run(ctx context.Context) (err error) {
 	// 删除原来的密钥目录
-	if err = gfx.Delete(filepath.Join(os.Getenv(homeEnv), gpgHome)); nil != err {
+	if err = gfx.Delete(k.Home(gpgHome)); nil != err {
 		return
 	}
 
 	wg := new(sync.WaitGroup)
 	wg.Add(len(k.Repositories))
-	for _, _repository := range k.Repositories {
-		go k.make(ctx, _repository, wg, &err)
+	for _, repo := range k.Repositories {
+		go k.make(ctx, repo, wg, &err)
 	}
 
 	// 等待所有任务执行完成
@@ -52,7 +50,7 @@ func (k *stepKeypair) make(_ context.Context, repository *repository, wg *sync.W
 	builder.Args("passphrase", k.passphrase())
 	builder.Args("quick-gen-key", repository.Username)
 	builder.Add("default", "default", k.Gpg.Expire)
-	if _, ee := k.Command(gpgExe).Args(builder.Build()).Dir(k.Source).Build().Exec(); nil != ee {
+	if _, ee := k.Command(k.Binary.Gpg).Args(builder.Build()).Dir(k.Source).Build().Exec(); nil != ee {
 		*err = ee
 		k.Warn("生成密钥出错", field.New("repository", repository))
 	}

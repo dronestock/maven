@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"net/url"
 	"os"
-	"path/filepath"
 
 	"github.com/beevik/etree"
-	"github.com/goexl/gfx"
+	"github.com/goexl/gox"
 	"github.com/goexl/gox/rand"
 )
 
@@ -58,21 +57,7 @@ func (g *stepGlobal) Runnable() bool {
 }
 
 func (g *stepGlobal) Run(_ context.Context) (err error) {
-	filename := filepath.Join(os.Getenv(homeEnv), mavenHome, settingsFilename)
-	if _, exists := gfx.Exists(filename); !exists {
-		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
-			return
-		}
-		if err = gfx.Create(filename, gfx.File()); nil != err {
-			return
-		}
-	}
-
 	doc := etree.NewDocument()
-	if err = doc.ReadFromFile(filename); nil != err {
-		return
-	}
-
 	// 配置全局
 	settings := g.settings(doc)
 	// 本地仓库
@@ -88,7 +73,9 @@ func (g *stepGlobal) Run(_ context.Context) (err error) {
 
 	// 写入文件
 	doc.Indent(xmlSpaces)
-	err = doc.WriteToFile(filename)
+	if err = doc.WriteToFile(g.Filepath.Settings); nil == err {
+		g.Cleanup().Name("全局配置文件").File(g.Filepath.Settings).Build()
+	}
 
 	return
 }
@@ -127,7 +114,7 @@ func (g *stepGlobal) writeMirrors(settings *etree.Element) {
 		}
 		mirror = mirrors.CreateElement(keyMirror)
 		mirror.CreateElement(keyId).CreateText(id)
-		mirror.CreateElement(keyMirrorOf).CreateText(xmlAll)
+		mirror.CreateElement(keyMirrorOf).CreateText(gox.StringBuilder(xmlAll, g.mirrorOf()).String())
 		mirror.CreateElement(keyName).CreateText(id)
 		mirror.CreateElement(keyUrl).CreateText(_mirror)
 	}
@@ -135,37 +122,24 @@ func (g *stepGlobal) writeMirrors(settings *etree.Element) {
 
 func (g *stepGlobal) writeServers(settings *etree.Element) {
 	servers := settings.CreateElement(keyServers)
-
-	for _, _repository := range g.Repositories {
+	for _, repo := range g.Repositories {
 		// 写入正式服务器
-		g.writeReleaseServer(servers, _repository)
+		g.writeServer(servers, repo.Username, repo.Password, repo.releaseId())
 		// 写入快照服务器
-		g.writeSnapshotServer(servers, _repository)
+		g.writeServer(servers, repo.Username, repo.Password, repo.snapshotId())
 	}
 }
 
-func (g *stepGlobal) writeReleaseServer(servers *etree.Element, repository *repository) {
-	path := etree.MustCompilePath(fmt.Sprintf(serverPathFormat, repository.releaseId()))
-	release := servers.FindElementPath(path)
+func (g *stepGlobal) writeServer(element *etree.Element, username string, password string, id string) {
+	path := etree.MustCompilePath(fmt.Sprintf(serverPathFormat, id))
+	release := element.FindElementPath(path)
 	if nil != release {
-		servers.RemoveChildAt(release.Index())
+		element.RemoveChildAt(release.Index())
 	}
-	release = servers.CreateElement(keyServer)
-	release.CreateElement(keyId).SetText(repository.releaseId())
-	release.CreateElement(keyUsername).SetText(repository.Username)
-	release.CreateElement(keyPassword).SetText(repository.Password)
-}
-
-func (g *stepGlobal) writeSnapshotServer(servers *etree.Element, repository *repository) {
-	path := etree.MustCompilePath(fmt.Sprintf(serverPathFormat, repository.snapshotId()))
-	snapshot := servers.FindElementPath(path)
-	if nil != snapshot {
-		servers.RemoveChildAt(snapshot.Index())
-	}
-	snapshot = servers.CreateElement(keyServer)
-	snapshot.CreateElement(keyId).SetText(repository.snapshotId())
-	snapshot.CreateElement(keyUsername).SetText(repository.Username)
-	snapshot.CreateElement(keyPassword).SetText(repository.Password)
+	release = element.CreateElement(keyServer)
+	release.CreateElement(keyId).SetText(id)
+	release.CreateElement(keyUsername).SetText(username)
+	release.CreateElement(keyPassword).SetText(password)
 }
 
 func (g *stepGlobal) writeProfiles(settings *etree.Element) {

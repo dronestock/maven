@@ -4,6 +4,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/goexl/gox"
 	"github.com/goexl/gox/rand"
 )
 
@@ -23,22 +24,22 @@ type repository struct {
 }
 
 func (r *repository) snapshotId() string {
-	return r.id(r.Snapshot)
+	return r.id(r.Snapshot, snapshot)
 }
 
 func (r *repository) releaseId() string {
-	return r.id(r.Release)
+	return r.id(r.Release, release)
 }
 
 func (r *repository) private() bool {
 	return !strings.HasPrefix(r.Snapshot, mavenRepositoryHost) || r.Private
 }
 
-func (r *repository) id(link string) (id string) {
+func (r *repository) id(link string, suffix string) (id string) {
 	if uri, err := url.Parse(link); nil != err {
 		id = rand.New().String().Length(randLength).Build().Generate()
 	} else {
-		id = uri.Host
+		id = gox.StringBuilder(uri.Host, dot, suffix).String()
 	}
 
 	return

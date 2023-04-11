@@ -6,7 +6,8 @@ import (
 	"path/filepath"
 
 	"github.com/beevik/etree"
-	"github.com/goexl/gfx"
+	"github.com/goexl/gox"
+	"github.com/goexl/gox/rand"
 )
 
 const (
@@ -39,18 +40,9 @@ func (p *stepPom) Runnable() bool {
 }
 
 func (p *stepPom) Run(_ context.Context) (err error) {
-	filename := filepath.Join(p.Source, pomFilename)
-	if _, exists := gfx.Exists(filename); !exists {
-		if err = gfx.Create(filepath.Dir(filename), gfx.Dir()); nil != err {
-			return
-		}
-		if err = gfx.Create(filename, gfx.File()); nil != err {
-			return
-		}
-	}
-
+	original := filepath.Join(p.Source, pomFilename)
 	doc := etree.NewDocument()
-	if err = doc.ReadFromFile(filename); nil != err {
+	if err = doc.ReadFromFile(original); nil != err {
 		return
 	}
 
@@ -67,7 +59,10 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 
 	// 写入文件
 	doc.Indent(xmlSpaces)
-	err = doc.WriteToFile(filename)
+	p.pom = gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
+	if err = doc.WriteToFile(p.pom); nil == err {
+		p.Cleanup().Name("清理模块文件").File(p.pom).Build()
+	}
 
 	return
 }
@@ -146,6 +141,13 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 		_repository.CreateElement(keyReleases).CreateElement(keyEnabled).SetText(xmlTrue)
 		_repository.CreateElement(keySnapshots).CreateElement(keyEnabled).SetText(xmlTrue)
 	}
+	// 写入镜像仓库，解决一部分包不能从私有仓库下载的问题
+	for _, repo := range p.Repositories {
+		// 写入正式仓库
+		p.writeRepository(repositories, repo.releaseId(), repo.Release, repositoryFormat, keyRepository)
+		// 写入快照仓库
+		p.writeRepository(repositories, repo.snapshotId(), repo.Snapshot, repositoryFormat, keyRepository)
+	}
 
 	plugins := project.SelectElement(keyPluginRepositories)
 	if nil == plugins {
@@ -171,41 +173,24 @@ func (p *stepPom) writeDistribution(project *etree.Element) {
 		distribution = project.CreateElement(keyDistribution)
 	}
 
-	for _, _repository := range p.Repositories {
+	for _, repo := range p.Repositories {
 		// 写入正式仓库
-		p.writeReleaseRepository(distribution, _repository)
+		p.writeRepository(distribution, repo.releaseId(), repo.Release, repositoryFormat, keyRepository)
 		// 写入快照仓库
-		p.writeSnapshotRepository(distribution, _repository)
-	}
-
-}
-
-func (p *stepPom) writeReleaseRepository(distribution *etree.Element, repository *repository) {
-	id := repository.releaseId()
-	releasePath := etree.MustCompilePath(fmt.Sprintf(repositoryFormat, id))
-	_repository := distribution.FindElementPath(releasePath)
-	if nil != _repository {
-		distribution.RemoveChildAt(_repository.Index())
-	}
-	_repository = distribution.CreateElement(keyRepository)
-	if _repository.Text() != id {
-		_repository.CreateElement(keyId).SetText(id)
-		_repository.CreateElement(keyName).SetText(id)
-		_repository.CreateElement(keyUrl).SetText(repository.Release)
+		p.writeRepository(distribution, repo.snapshotId(), repo.Snapshot, snapshotRepositoryFormat, keySnapshotRepository)
 	}
 }
 
-func (p *stepPom) writeSnapshotRepository(distribution *etree.Element, repository *repository) {
-	id := repository.snapshotId()
-	snapshotPath := etree.MustCompilePath(fmt.Sprintf(snapshotRepositoryFormat, id))
-	snapshot := distribution.FindElementPath(snapshotPath)
-	if nil != snapshot {
-		distribution.RemoveChildAt(snapshot.Index())
+func (p *stepPom) writeRepository(element *etree.Element, id string, url string, format string, key string) {
+	path := etree.MustCompilePath(fmt.Sprintf(format, id))
+	repo := element.FindElementPath(path)
+	if nil != repo {
+		element.RemoveChildAt(repo.Index())
 	}
-	snapshot = distribution.CreateElement(keySnapshotRepository)
-	if snapshot.Text() != id {
-		snapshot.CreateElement(keyId).SetText(id)
-		snapshot.CreateElement(keyName).SetText(id)
-		snapshot.CreateElement(keyUrl).SetText(repository.Snapshot)
+	repo = element.CreateElement(key)
+	if repo.Text() != id {
+		repo.CreateElement(keyId).SetText(id)
+		repo.CreateElement(keyName).SetText(id)
+		repo.CreateElement(keyUrl).SetText(url)
 	}
 }

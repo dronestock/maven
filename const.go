@@ -1,12 +1,13 @@
 package main
 
 const (
-	equal = "="
+	equal       = "="
+	dot         = "."
+	comma       = ","
+	exclamation = "!"
+	release     = "release"
+	snapshot    = "snapshot"
 
-	exe         = "mvn"
-	gpgExe      = "gpg"
-	gskExe      = "gsk"
-	homeEnv     = "HOME"
 	gpgHome     = ".gnupg"
 	pomFilename = "pom.xml"
 
@@ -16,8 +17,6 @@ const (
 	xmlAll     = "*"
 	xmlAlways  = "always"
 
-	mavenHome           = ".m2"
-	settingsFilename    = "settings.xml"
 	mavenRepositoryHost = "https://s01.oss.sonatype.org"
 
 	xmlDeclare        = `version="1.0" encoding="UTF-8"`

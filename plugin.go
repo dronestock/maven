@@ -12,53 +12,58 @@ import (
 type plugin struct {
 	drone.Base
 
+	// 执行程序
+	Binary binary `default:"${BINARY}"`
+	// 文件路径
+	Filepath _filepath `default:"${FILEPATH}"`
 	// 源文件目录
-	Source string `default:"${PLUGIN_SOURCE=${SOURCE=.}}" validate:"required"`
+	Source string `default:"${SOURCE=.}" validate:"required"`
 
 	// 仓库
-	Repository *repository `default:"${PLUGIN_REPOSITORY=${REPOSITORY}}"`
+	Repository *repository `default:"${REPOSITORY}"`
 	// 仓库列表
-	Repositories []*repository `default:"${PLUGIN_REPOSITORIES=${REPOSITORIES}}"`
+	Repositories []*repository `default:"${REPOSITORIES}"`
 
 	// 密钥
-	Gpg gpg `default:"${PLUGIN_GPG=${GPG}}"`
+	Gpg gpg `default:"${GPG}"`
 
 	// 坐标，组
-	Group string `default:"${PLUGIN_GROUP=${GROUP}}"`
+	Group string `default:"${GROUP}"`
 	// 坐标，制品
-	Artifact string `default:"${PLUGIN_ARTIFACT=${ARTIFACT}}"`
+	Artifact string `default:"${ARTIFACT}"`
 	// 版本
-	Version string `default:"${PLUGIN_VERSION=${VERSION}}"`
+	Version string `default:"${VERSION}"`
 	// 打包方式
-	Packaging string `default:"${PLUGIN_PACKAGING=${PACKAGING=jar}}" validate:"oneof=jar war"`
+	Packaging string `default:"${PACKAGING=jar}" validate:"oneof=jar war"`
 
 	// 额外属性
-	Properties map[string]string `default:"${PLUGIN_PROPERTIES=${PROPERTIES}}"`
+	Properties map[string]string `default:"${PROPERTIES}"`
 	// 参数
-	Defines map[string]string `default:"${PLUGIN_DEFINES=${DEFINES}}"`
+	Defines map[string]string `default:"${DEFINES}"`
 
 	// 镜像加速列表
-	Mirrors []string `default:"${PLUGIN_MIRRORS=${MIRRORS}}"`
+	Mirrors []string `default:"${MIRRORS}"`
 	// 测试
-	Test bool `default:"${PLUGIN_TEST=${TEST=true}}"`
+	Test bool `default:"${TEST=true}"`
 	// 清理
-	Clean bool `default:"${PLUGIN_CLEAN=${CLEAN=true}}"`
+	Clean bool `default:"${CLEAN=true}"`
 	// 是否包含源码
-	Sources bool `default:"${PLUGIN_SOURCES=${SOURCES=true}}"`
+	Sources bool `default:"${SOURCES=true}"`
 	// 是否包含文档
-	Docs bool `default:"${PLUGIN_DOCS=${DOCS=true}}"`
+	Docs bool `default:"${DOCS=true}"`
 
 	// 打包插件版本
-	JarPluginVersion string `default:"${PLUGIN_JAR_PLUGIN_VERSION=${JAR_PLUGIN_VERSION=3.2.1}}"`
+	JarPluginVersion string `default:"${JAR_PLUGIN_VERSION=3.2.1}"`
 	// 源码插件版本
-	SourcePluginVersion string `default:"${PLUGIN_SOURCE_PLUGIN_VERSION=${SOURCE_PLUGIN_VERSION=3.2.1}}"`
+	SourcePluginVersion string `default:"${SOURCE_PLUGIN_VERSION=3.2.1}"`
 	// 文档插件版本
-	DocPluginVersion string `default:"${PLUGIN_DOC_PLUGIN_VERSION=${DOC_PLUGIN_VERSION=3.3.1}}"`
+	DocPluginVersion string `default:"${DOC_PLUGIN_VERSION=3.3.1}"`
 	// 签名插件版本
-	GpgPluginVersion string `default:"${PLUGIN_GPG_PLUGIN_VERSION=${GPG_PLUGIN_VERSION=3.0.1}}"`
+	GpgPluginVersion string `default:"${GPG_PLUGIN_VERSION=3.0.1}"`
 	// 发布仓库版本
-	NexusPluginVersion string `default:"${PLUGIN_NEXUS_PLUGIN_VERSION=${NEXUS_PLUGIN_VERSION=1.6.13}}"`
+	NexusPluginVersion string `default:"${NEXUS_PLUGIN_VERSION=1.6.13}"`
 
+	pom         string
 	_passphrase string
 }
 
@@ -166,4 +171,14 @@ func (p *plugin) private() (private bool) {
 	}
 
 	return
+}
+
+func (p *plugin) mirrorOf() string {
+	mirrorOf := gox.StringBuilder()
+	for _, repo := range p.Repositories {
+		mirrorOf.Append(comma).Append(exclamation).Append(repo.releaseId())
+		mirrorOf.Append(comma).Append(exclamation).Append(repo.snapshotId())
+	}
+
+	return mirrorOf.String()
 }
