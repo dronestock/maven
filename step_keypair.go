@@ -47,8 +47,8 @@ func (k *stepKeypair) make(_ context.Context, repository *repository, wg *sync.W
 
 	builder := args.New().Build()
 	builder.Flag("batch")
-	builder.Args("passphrase", k.passphrase())
-	builder.Args("quick-gen-key", repository.Username)
+	builder.Option("passphrase", k.passphrase())
+	builder.Option("quick-gen-key", repository.Username)
 	builder.Add("default", "default", k.Gpg.Expire)
 	if _, ee := k.Command(k.Binary.Gpg).Args(builder.Build()).Dir(k.Source).Build().Exec(); nil != ee {
 		*err = ee

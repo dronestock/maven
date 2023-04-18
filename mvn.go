@@ -11,15 +11,15 @@ import (
 func (p *plugin) mvn(builder *args.Builder) (err error) {
 	// 额外参数
 	for key, value := range p.defines() {
-		builder.Args("define", gox.StringBuilder(key, equal, value).String())
+		builder.Option("define", gox.StringBuilder(key, equal, value).String())
 	}
 	// 全局配置文件
 	if abs, ae := filepath.Abs(p.Filepath.Settings); nil == ae {
-		builder.Args("settings", abs)
+		builder.Option("settings", abs)
 	}
 	// 指定模块文件
 	if abs, ae := filepath.Abs(p.pom); nil == ae {
-		builder.Args("file", abs)
+		builder.Option("file", abs)
 	}
 
 	arguments := builder.Build()
