@@ -14,10 +14,13 @@ type java struct {
 }
 
 func (j *java) setHome(command *gex.Builder) {
-	switch j.Version {
-	case javaVersionLts:
-		command.Environment().Kv(javaHome, j.Lts).Build()
-	case javaVersionLatest:
-		command.Environment().Kv(javaHome, j.Latest).Build()
+	home := ""
+	if javaVersionLts == j.Version {
+		home = j.Lts
+	} else if javaVersionLatest == j.Version {
+		home = j.Latest
+	}
+	if "" != home {
+		command.Environment().Kv(javaHome, home).Build()
 	}
 }
