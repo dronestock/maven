@@ -85,8 +85,8 @@ ARG JAVA_HOME
 ARG MAVEN_HOME
 # 配置环境变量，配置Java主目录和Maven主目录以及Java和Maven的快捷方式
 ENV JAVA_OPTS ""
-ENV JAVA /var/lib/java
-ENV MAVEN_LOCAL_REPOSITORY ${JAVA}/maven
+ENV JAVA_LIB /var/lib/java
+ENV MAVEN_LOCAL_REPOSITORY ${JAVA_LIB}/maven
 
 ENV PATH=${JAVA_HOME}/bin:${MAVEN_HOME}/bin:$PATH
 ENV JAVA_LTS ${JAVA_HOME}/lts
