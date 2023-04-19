@@ -12,9 +12,9 @@ import (
 const (
 	keyProject = "project"
 
-	repositoryFormat         = "repository[url='%s']"
-	snapshotRepositoryFormat = "snapshotRepository[url='%s']"
-	keyDistribution          = "distributionManagement"
+	releaseFormat   = "repository[url='%s']"
+	snapshotFormat  = "snapshotRepository[url='%s']"
+	keyDistribution = "distributionManagement"
 )
 
 type stepPom struct {
@@ -124,9 +124,9 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 	// 写入镜像仓库，解决一部分包不能从私有仓库下载的问题
 	for _, repo := range p.Repositories {
 		// 写入正式仓库
-		p.writeRepository(repositories, repo.releaseId(p.pom), repo.Release, repositoryFormat, keyRepository)
+		p.writeRepository(repositories, repo.releaseId(p.pom), repo.Release, releaseFormat, keyRepository)
 		// 写入快照仓库
-		p.writeRepository(repositories, repo.snapshotId(p.pom), repo.Snapshot, repositoryFormat, keyRepository)
+		p.writeRepository(repositories, repo.snapshotId(p.pom), repo.Snapshot, releaseFormat, keyRepository)
 	}
 }
 
@@ -138,9 +138,9 @@ func (p *stepPom) writeDistribution(project *etree.Element) {
 
 	for _, repo := range p.Repositories {
 		// 写入正式仓库
-		p.writeRepository(distribution, repo.releaseId(p.pom), repo.Release, repositoryFormat, keyRepository)
+		p.writeRepository(distribution, repo.releaseId(p.pom), repo.Release, releaseFormat, keyRepository)
 		// 写入快照仓库
-		p.writeRepository(distribution, repo.snapshotId(p.pom), repo.Snapshot, snapshotRepositoryFormat, keySnapshotRepository)
+		p.writeRepository(distribution, repo.snapshotId(p.pom), repo.Snapshot, snapshotFormat, keySnapshotRepository)
 	}
 }
 
