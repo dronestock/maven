@@ -17,7 +17,7 @@ updates:
       interval: daily
     ignore:
       - dependency-name: "openjdk"
-        versions: ["8-alpine"]
+        versions: [">8-alpine"]
     pull-request-branch-name:
       separator: "-"
     assignees:
