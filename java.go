@@ -20,6 +20,4 @@ func (j *java) setHome(command *gex.Builder) {
 	case javaVersionLatest:
 		command.Environment().Kv(javaHome, j.Latest)
 	}
-
-	return
 }

@@ -19,9 +19,4 @@ const (
 	keyRepository         = "repository"
 	keySnapshotRepository = "snapshotRepository"
 	keyRepositories       = "repositories"
-	keyPluginRepository   = "pluginRepository"
-	keyPluginRepositories = "pluginRepositories"
-
-	keyReleases  = "releases"
-	keySnapshots = "snapshots"
 )
