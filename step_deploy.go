@@ -17,7 +17,7 @@ func newDeployStep(plugin *plugin) *stepDeploy {
 }
 
 func (d *stepDeploy) Runnable() bool {
-	return 0 != len(d.Repositories)
+	return d.deploy()
 }
 
 func (d *stepDeploy) Run(ctx context.Context) (err error) {

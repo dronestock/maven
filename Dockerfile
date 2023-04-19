@@ -2,13 +2,20 @@ ARG JAVA_HOME=/opt/openjdk
 ARG MAVEN_HOME=/usr/share/maven/
 
 
-FROM dockerproxy.com/library/openjdk:19-alpine AS jdk
+FROM dockerproxy.com/library/openjdk:8-alpine AS lts
 
 # 方便环境变量的设置
-RUN mv /opt/openjdk-* /opt/openjdk
+RUN mkdir --parents /opt/openjdk/lts; mv /usr/lib/jvm/java-*/* /opt/openjdk/lts
+
+
+FROM dockerproxy.com/library/openjdk:19-alpine AS latest
+
+# 方便环境变量的设置
+RUN mkdir --parents /opt/openjdk/latest; mv /opt/openjdk-*/* /opt/openjdk/latest
 
 
 FROM dockerproxy.com/library/maven:3.9.1 AS maven
+
 
 FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.17.2 AS builder
 
@@ -17,8 +24,9 @@ ARG MAVEN_HOME
 
 
 # 复制文件
-COPY --from=jdk ${JAVA_HOME} /docker/${JAVA_HOME}
-COPY --from=jdk /etc/ssl/certs/java/cacerts /docker/etc/ssl/certs/java/cacerts
+COPY --from=lts ${JAVA_HOME} /docker/${JAVA_HOME}
+COPY --from=latest ${JAVA_HOME} /docker/${JAVA_HOME}
+COPY --from=latest /etc/ssl/certs/java/cacerts /docker/etc/ssl/certs/java/cacerts
 COPY --from=maven ${MAVEN_HOME} /docker/${MAVEN_HOME}
 COPY docker /docker
 COPY maven /docker/usr/local/bin
@@ -81,3 +89,5 @@ ENV JAVA /var/lib/java
 ENV MAVEN_LOCAL_REPOSITORY ${JAVA}/maven
 
 ENV PATH=${JAVA_HOME}/bin:${MAVEN_HOME}/bin:$PATH
+ENV JAVA_LTS ${JAVA_HOME}/lts
+ENV JAVA_LATEST ${JAVA_HOME}/latest

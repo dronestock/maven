@@ -28,7 +28,9 @@ func (p *plugin) mvn(builder *args.Builder) (err error) {
 		field.New("source", p.Source),
 		field.New("args", arguments),
 	}
-	if _, err = p.Command(p.Binary.Maven).Args(arguments).Dir(p.Source).Build().Exec(); nil != err {
+	command := p.Command(p.Binary.Maven).Args(arguments).Dir(p.Source)
+	p.Java.setHome(command)
+	if _, err = command.Build().Exec(); nil != err {
 		p.Error("Maven命令执行出错", fields.Add(field.Error(err))...)
 	} else {
 		p.Debug("Maven命令执行成功", fields...)

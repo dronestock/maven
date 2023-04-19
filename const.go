@@ -8,6 +8,7 @@ const (
 	release     = "release"
 	snapshot    = "snapshot"
 
+	javaHome    = "JAVA_HOME"
 	gpgHome     = ".gnupg"
 	pomFilename = "pom.xml"
 
@@ -15,7 +16,6 @@ const (
 	xmlSpaces  = 2
 	xmlTrue    = "true"
 	xmlAll     = "*"
-	xmlAlways  = "always"
 
 	mavenRepositoryHost = "https://s01.oss.sonatype.org"
 

@@ -19,7 +19,7 @@ func newGskStep(plugin *plugin) *stepGsk {
 }
 
 func (g *stepGsk) Runnable() bool {
-	return !g.private()
+	return g.deploy() && !g.private()
 }
 
 func (g *stepGsk) Run(ctx context.Context) (err error) {
@@ -28,7 +28,6 @@ func (g *stepGsk) Run(ctx context.Context) (err error) {
 	for _, _repository := range g.Repositories {
 		go g.gsk(ctx, _repository, wg, &err)
 	}
-
 	// 等待所有任务执行完成
 	wg.Wait()
 

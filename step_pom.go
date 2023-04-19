@@ -12,13 +12,6 @@ import (
 const (
 	keyProject = "project"
 
-	keyEnabled              = "enabled"
-	keyUpdatePolicy         = "updatePolicy"
-	xmlCentral              = "central"
-	xmlCentralUrl           = "http://central"
-	centralRepositoryFormat = "repository[url='%s']"
-	centralPluginFormat     = "pluginRepository[url='%s']"
-
 	repositoryFormat         = "repository[url='%s']"
 	snapshotRepositoryFormat = "snapshotRepository[url='%s']"
 	keyDistribution          = "distributionManagement"
@@ -45,10 +38,12 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 	p.writeProperties(project)
 	// 设置仓库
 	p.writeRepositories(project)
-	// 设置发布仓库
-	p.writeDistribution(project)
-	// 设置发布插件
-	p.writePlugins(project)
+	if p.deploy() { // 只有在需要部署的时候才设置相关配置
+		// 设置发布仓库
+		p.writeDistribution(project)
+		// 设置发布插件
+		p.writePlugins(project)
+	}
 
 	// 写入文件
 	p.pom.Indent(xmlSpaces)
@@ -126,38 +121,12 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 		repositories = project.CreateElement(keyRepositories)
 	}
 
-	path := fmt.Sprintf(centralRepositoryFormat, xmlCentralUrl)
-	_repository := repositories.FindElementPath(etree.MustCompilePath(path))
-	if nil == _repository {
-		_repository = repositories.CreateElement(keyRepository)
-		_repository.CreateElement(keyId).SetText(xmlCentral)
-		_repository.CreateElement(keyUrl).SetText(xmlCentralUrl)
-		_repository.CreateElement(keyReleases).CreateElement(keyEnabled).SetText(xmlTrue)
-		_repository.CreateElement(keySnapshots).CreateElement(keyEnabled).SetText(xmlTrue)
-	}
 	// 写入镜像仓库，解决一部分包不能从私有仓库下载的问题
 	for _, repo := range p.Repositories {
 		// 写入正式仓库
 		p.writeRepository(repositories, repo.releaseId(p.pom), repo.Release, repositoryFormat, keyRepository)
 		// 写入快照仓库
 		p.writeRepository(repositories, repo.snapshotId(p.pom), repo.Snapshot, repositoryFormat, keyRepository)
-	}
-
-	plugins := project.SelectElement(keyPluginRepositories)
-	if nil == plugins {
-		plugins = project.CreateElement(keyPluginRepositories)
-	}
-
-	_plugin := plugins.FindElementPath(etree.MustCompilePath(fmt.Sprintf(centralPluginFormat, xmlCentralUrl)))
-	if nil == _plugin {
-		_plugin = plugins.CreateElement(keyPluginRepository)
-		_plugin.CreateElement(keyId).SetText(xmlCentral)
-		_plugin.CreateElement(keyUrl).SetText(xmlCentralUrl)
-		_plugin.CreateElement(keyReleases).CreateElement(keyEnabled).SetText(xmlTrue)
-
-		snapshots := _plugin.CreateElement(keySnapshots)
-		snapshots.CreateElement(keyEnabled).SetText(xmlTrue)
-		snapshots.CreateElement(keyUpdatePolicy).SetText(xmlAlways)
 	}
 }
 

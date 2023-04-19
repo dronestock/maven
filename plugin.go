@@ -64,6 +64,8 @@ type plugin struct {
 	GpgPluginVersion string `default:"${GPG_PLUGIN_VERSION=3.0.1}"`
 	// 发布仓库版本
 	NexusPluginVersion string `default:"${NEXUS_PLUGIN_VERSION=1.6.13}"`
+	// 执行程序
+	Java java `default:"${JAVA}" json:"java,omitempty"`
 
 	filename    string
 	pom         *etree.Document
@@ -81,14 +83,14 @@ func (p *plugin) Config() drone.Config {
 func (p *plugin) Steps() drone.Steps {
 	return drone.Steps{
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(newGlobalStep(p)).Name("全局").Interrupt().Build(),
+		drone.NewStep(newGlobalStep(p)).Name("全局配置").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(newPomStep(p)).Name("项目").Interrupt().Build(),
+		drone.NewStep(newPomStep(p)).Name("项目配置").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(newKeypairStep(p)).Name("密钥").Interrupt().Build(),
-		drone.NewStep(newPackageStep(p)).Name("打包").Build(),
-		drone.NewStep(newGskStep(p)).Name("上传").Build(),
-		drone.NewStep(newDeployStep(p)).Name("发布").Build(),
+		drone.NewStep(newKeypairStep(p)).Name("生成密钥").Interrupt().Build(),
+		drone.NewStep(newPackageStep(p)).Name("代码打包").Build(),
+		drone.NewStep(newGskStep(p)).Name("上传密钥").Build(),
+		drone.NewStep(newDeployStep(p)).Name("发布仓库").Build(),
 	}
 }
 

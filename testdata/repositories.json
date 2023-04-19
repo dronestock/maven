@@ -1,9 +1,14 @@
 [
     {
-        "release": "https://nexus.sichuancredit.cn/repository/maven-releases/",
-        "snapshot": "https://nexus.sichuancredit.cn/repository/maven-snapshots/",
-        "username": "droneci",
-        "password": "rJhP45n4EUoQ2f",
-        "deploy": false
+        "release": "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2",
+        "snapshot": "https://s01.oss.sonatype.org/content/writeRepositories/snapshots",
+        "username": "test",
+        "password": "test"
+    },
+    {
+        "release": "https://maven.itcoursee.com/service/local/staging/deploy/maven2",
+        "snapshot": "https://maven.itcoursee.com/content/writeRepositories/snapshots",
+        "username": "test",
+        "password": "test"
     }
 ]
