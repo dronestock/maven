@@ -40,8 +40,8 @@ func (g *stepGsk) gsk(_ context.Context, repository *repository, wg *sync.WaitGr
 	defer wg.Done()
 
 	builder := args.New().Build()
-	builder.Option("server", g.Gpg.Server)
-	builder.Option("username", repository.Username)
+	builder.Arg("server", g.Gpg.Server)
+	builder.Arg("username", repository.Username)
 	if _, ee := g.Command(g.Binary.Gsk).Args(builder.Build()).Dir(g.Source).Build().Exec(); nil != ee {
 		*err = ee
 		g.Warn("生成密钥出错", field.New("repository", repository))

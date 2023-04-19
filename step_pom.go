@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 
 	"github.com/beevik/etree"
 	"github.com/goexl/gox"
@@ -20,8 +19,8 @@ const (
 	centralRepositoryFormat = "repository[url='%s']"
 	centralPluginFormat     = "pluginRepository[url='%s']"
 
-	repositoryFormat         = "repository[id='%s']"
-	snapshotRepositoryFormat = "snapshotRepository[id='%s']"
+	repositoryFormat         = "repository[url='%s']"
+	snapshotRepositoryFormat = "snapshotRepository[url='%s']"
 	keyDistribution          = "distributionManagement"
 )
 
@@ -36,18 +35,12 @@ func newPomStep(plugin *plugin) *stepPom {
 }
 
 func (p *stepPom) Runnable() bool {
-	return 0 != len(p.Repositories)
+	return p.override()
 }
 
 func (p *stepPom) Run(_ context.Context) (err error) {
-	original := filepath.Join(p.Source, pomFilename)
-	doc := etree.NewDocument()
-	if err = doc.ReadFromFile(original); nil != err {
-		return
-	}
-
 	// 设置项目
-	project := p.writeProject(doc)
+	project := p.writeProject()
 	// 设置项目属性
 	p.writeProperties(project)
 	// 设置仓库
@@ -58,20 +51,20 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 	p.writePlugins(project)
 
 	// 写入文件
-	doc.Indent(xmlSpaces)
-	p.pom = gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
-	if err = doc.WriteToFile(p.pom); nil == err {
-		p.Cleanup().Name("清理模块文件").File(p.pom).Build()
+	p.pom.Indent(xmlSpaces)
+	p.filename = gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
+	if err = p.pom.WriteToFile(p.filename); nil == err {
+		p.Cleanup().Name("清理模块文件").File(p.filename).Build()
 	}
 
 	return
 }
 
-func (p *stepPom) writeProject(doc *etree.Document) (project *etree.Element) {
-	project = doc.SelectElement(keyProject)
+func (p *stepPom) writeProject() (project *etree.Element) {
+	project = p.pom.SelectElement(keyProject)
 	if nil == project {
-		doc.CreateProcInst(keyXml, xmlDeclare)
-		project = doc.CreateElement(keyProject)
+		p.pom.CreateProcInst(keyXml, xmlDeclare)
+		project = p.pom.CreateElement(keyProject)
 		project.CreateAttr(keyXmlns, xmlProjectXmlns)
 		project.CreateAttr(keyXsi, xmlProjectXsi)
 		project.CreateAttr(keySchema, xmlProjectSchema)
@@ -133,7 +126,8 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 		repositories = project.CreateElement(keyRepositories)
 	}
 
-	_repository := repositories.FindElementPath(etree.MustCompilePath(fmt.Sprintf(centralRepositoryFormat, xmlCentralUrl)))
+	path := fmt.Sprintf(centralRepositoryFormat, xmlCentralUrl)
+	_repository := repositories.FindElementPath(etree.MustCompilePath(path))
 	if nil == _repository {
 		_repository = repositories.CreateElement(keyRepository)
 		_repository.CreateElement(keyId).SetText(xmlCentral)
@@ -144,9 +138,9 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 	// 写入镜像仓库，解决一部分包不能从私有仓库下载的问题
 	for _, repo := range p.Repositories {
 		// 写入正式仓库
-		p.writeRepository(repositories, repo.releaseId(), repo.Release, repositoryFormat, keyRepository)
+		p.writeRepository(repositories, repo.releaseId(p.pom), repo.Release, repositoryFormat, keyRepository)
 		// 写入快照仓库
-		p.writeRepository(repositories, repo.snapshotId(), repo.Snapshot, repositoryFormat, keyRepository)
+		p.writeRepository(repositories, repo.snapshotId(p.pom), repo.Snapshot, repositoryFormat, keyRepository)
 	}
 
 	plugins := project.SelectElement(keyPluginRepositories)
@@ -175,15 +169,15 @@ func (p *stepPom) writeDistribution(project *etree.Element) {
 
 	for _, repo := range p.Repositories {
 		// 写入正式仓库
-		p.writeRepository(distribution, repo.releaseId(), repo.Release, repositoryFormat, keyRepository)
+		p.writeRepository(distribution, repo.releaseId(p.pom), repo.Release, repositoryFormat, keyRepository)
 		// 写入快照仓库
-		p.writeRepository(distribution, repo.snapshotId(), repo.Snapshot, snapshotRepositoryFormat, keySnapshotRepository)
+		p.writeRepository(distribution, repo.snapshotId(p.pom), repo.Snapshot, snapshotRepositoryFormat, keySnapshotRepository)
 	}
 }
 
 func (p *stepPom) writeRepository(element *etree.Element, id string, url string, format string, key string) {
-	path := etree.MustCompilePath(fmt.Sprintf(format, id))
-	repo := element.FindElementPath(path)
+	path := fmt.Sprintf(format, url)
+	repo := element.FindElementPath(etree.MustCompilePath(path))
 	if nil != repo {
 		element.RemoveChildAt(repo.Index())
 	}

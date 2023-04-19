@@ -1,8 +1,10 @@
 package main
 
 import (
+	"path/filepath"
 	"strings"
 
+	"github.com/beevik/etree"
 	"github.com/dronestock/drone"
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
@@ -63,7 +65,8 @@ type plugin struct {
 	// 发布仓库版本
 	NexusPluginVersion string `default:"${NEXUS_PLUGIN_VERSION=1.6.13}"`
 
-	pom         string
+	filename    string
+	pom         *etree.Document
 	_passphrase string
 }
 
@@ -78,20 +81,27 @@ func (p *plugin) Config() drone.Config {
 func (p *plugin) Steps() drone.Steps {
 	return drone.Steps{
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(newKeypairStep(p)).Name("生成密钥").Interrupt().Build(),
+		drone.NewStep(newGlobalStep(p)).Name("全局").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(newGlobalStep(p)).Name("写入全局配置").Interrupt().Build(),
+		drone.NewStep(newPomStep(p)).Name("项目").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
-		drone.NewStep(newPomStep(p)).Name("修改项目配置").Interrupt().Build(),
+		drone.NewStep(newKeypairStep(p)).Name("密钥").Interrupt().Build(),
 		drone.NewStep(newPackageStep(p)).Name("打包").Build(),
-		drone.NewStep(newGskStep(p)).Name("上传密钥到服务器").Build(),
-		drone.NewStep(newDeployStep(p)).Name("发布到仓库").Build(),
+		drone.NewStep(newGskStep(p)).Name("上传").Build(),
+		drone.NewStep(newDeployStep(p)).Name("发布").Build(),
 	}
 }
 
 func (p *plugin) Setup() (err error) {
 	if nil != p.Repository {
 		p.Repositories = append(p.Repositories, p.Repository)
+	}
+
+	// 初始化配置文件
+	original := filepath.Join(p.Source, pomFilename)
+	p.pom = etree.NewDocument()
+	if err = p.pom.ReadFromFile(original); nil != err {
+		return
 	}
 
 	return
@@ -176,9 +186,24 @@ func (p *plugin) private() (private bool) {
 func (p *plugin) mirrorOf() string {
 	mirrorOf := gox.StringBuilder()
 	for _, repo := range p.Repositories {
-		mirrorOf.Append(comma).Append(exclamation).Append(repo.releaseId())
-		mirrorOf.Append(comma).Append(exclamation).Append(repo.snapshotId())
+		mirrorOf.Append(comma).Append(exclamation).Append(repo.releaseId(p.pom))
+		mirrorOf.Append(comma).Append(exclamation).Append(repo.snapshotId(p.pom))
 	}
 
 	return mirrorOf.String()
+}
+
+func (p *plugin) deploy() (deploy bool) {
+	for _, _repository := range p.Repositories {
+		deploy = nil != _repository.Deploy && *_repository.Deploy
+		if deploy {
+			break
+		}
+	}
+
+	return
+}
+
+func (p *plugin) override() bool {
+	return 0 != len(p.Properties) || 0 != len(p.Defines) || p.deploy()
 }

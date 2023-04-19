@@ -37,7 +37,7 @@ func (p *stepPackage) Run(_ context.Context) (err error) {
 
 	// 测试参数
 	if !p.Test {
-		builder.Flag("define").Add("maven.skip.test=true")
+		builder.Arg("define", "maven.test.skip=true")
 	}
 
 	// 打印更多日志

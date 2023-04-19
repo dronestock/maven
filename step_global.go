@@ -53,7 +53,7 @@ func newGlobalStep(plugin *plugin) *stepGlobal {
 }
 
 func (g *stepGlobal) Runnable() bool {
-	return 0 != len(g.Repositories)
+	return true
 }
 
 func (g *stepGlobal) Run(_ context.Context) (err error) {
@@ -124,9 +124,9 @@ func (g *stepGlobal) writeServers(settings *etree.Element) {
 	servers := settings.CreateElement(keyServers)
 	for _, repo := range g.Repositories {
 		// 写入正式服务器
-		g.writeServer(servers, repo.Username, repo.Password, repo.releaseId())
+		g.writeServer(servers, repo.Username, repo.Password, repo.releaseId(g.pom))
 		// 写入快照服务器
-		g.writeServer(servers, repo.Username, repo.Password, repo.snapshotId())
+		g.writeServer(servers, repo.Username, repo.Password, repo.snapshotId(g.pom))
 	}
 }
 

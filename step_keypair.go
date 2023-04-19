@@ -19,8 +19,8 @@ func newKeypairStep(plugin *plugin) *stepKeypair {
 	}
 }
 
-func (k *stepKeypair) Runnable() bool {
-	return 0 != len(k.Repositories)
+func (k *stepKeypair) Runnable() (runnable bool) {
+	return k.deploy()
 }
 
 func (k *stepKeypair) Run(ctx context.Context) (err error) {
