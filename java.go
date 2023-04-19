@@ -16,8 +16,8 @@ type java struct {
 func (j *java) setHome(command *gex.Builder) {
 	switch j.Version {
 	case javaVersionLts:
-		command.Environment().Kv(javaHome, j.Lts)
+		command.Environment().Kv(javaHome, j.Lts).Build()
 	case javaVersionLatest:
-		command.Environment().Kv(javaHome, j.Latest)
+		command.Environment().Kv(javaHome, j.Latest).Build()
 	}
 }
