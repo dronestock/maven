@@ -55,7 +55,7 @@ RUN set -ex \
     \
     # 安装依赖库
     && apk update \
-    && apk --no-cache add libstdc++ gcompat gnupg \
+    && apk --no-cache add libstdc++ gcompat gnupg nss \
     \
     # 解决找不到库的问题
     && LD_PATH=/etc/ld-musl-x86_64.path \
