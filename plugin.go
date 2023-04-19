@@ -88,7 +88,7 @@ func (p *plugin) Steps() drone.Steps {
 		drone.NewStep(newPomStep(p)).Name("项目配置").Interrupt().Build(),
 		// 执行出错具有不可重复性，不需要重试
 		drone.NewStep(newKeypairStep(p)).Name("生成密钥").Interrupt().Build(),
-		drone.NewStep(newPackageStep(p)).Name("代码打包").Build(),
+		drone.NewStep(newPackageStep(p)).Name("编译打包").Build(),
 		drone.NewStep(newGskStep(p)).Name("上传密钥").Build(),
 		drone.NewStep(newDeployStep(p)).Name("发布仓库").Build(),
 	}
