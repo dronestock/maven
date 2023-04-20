@@ -3,7 +3,7 @@ ARG MAVEN_HOME=/usr/share/maven/
 
 
 # @dependabot ignore
-FROM dockerproxy.com/library/openjdk:8-alpine AS lts
+FROM dockerproxy.com/library/openjdk:18-alpine AS lts
 
 # 方便环境变量的设置
 RUN mkdir --parents /opt/openjdk/lts; mv /usr/lib/jvm/java-*/* /opt/openjdk/lts
