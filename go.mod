@@ -4,7 +4,8 @@ go 1.19
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/dronestock/drone v0.9.7
+	github.com/dronestock/drone v0.9.8
+	github.com/goexl/gex v0.3.1
 	github.com/goexl/gfx v0.1.7
 	github.com/goexl/gox v0.3.4
 )
@@ -20,7 +21,6 @@ require (
 	github.com/goexl/baozheng v0.0.1 // indirect
 	github.com/goexl/env v0.0.2 // indirect
 	github.com/goexl/exc v0.0.5 // indirect
-	github.com/goexl/gex v0.3.1 // indirect
 	github.com/goexl/guc v0.0.7 // indirect
 	github.com/goexl/mengpo v0.2.4 // indirect
 	github.com/goexl/simaqian v0.2.5 // indirect
