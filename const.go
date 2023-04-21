@@ -6,7 +6,9 @@ const (
 	comma       = ","
 	exclamation = "!"
 	release     = "release"
+	releases    = "releases"
 	snapshot    = "snapshot"
+	snapshots   = "snapshots"
 
 	javaHome    = "JAVA_HOME"
 	gpgHome     = ".gnupg"

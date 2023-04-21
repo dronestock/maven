@@ -6,6 +6,7 @@ import (
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/args"
 	"github.com/goexl/gox/field"
+	"github.com/goexl/simaqian"
 )
 
 func (p *plugin) mvn(builder *args.Builder) (err error) {
@@ -20,6 +21,10 @@ func (p *plugin) mvn(builder *args.Builder) (err error) {
 	// 指定模块文件
 	if abs, ae := filepath.Abs(p.filename); nil == ae && p.override() {
 		builder.Arg("file", abs)
+	}
+	// 启用调试模式
+	if p.Enabled(simaqian.LevelDebug) {
+		builder.Flag("debug")
 	}
 
 	arguments := builder.Build()

@@ -67,9 +67,10 @@ type plugin struct {
 	// 执行程序
 	Java java `default:"${JAVA}" json:"java,omitempty"`
 
-	filename    string
-	pom         *etree.Document
-	_passphrase string
+	source   string
+	filename string
+	pom      *etree.Document
+	phrase   string
 }
 
 func newPlugin() drone.Plugin {
@@ -102,8 +103,12 @@ func (p *plugin) Setup() (err error) {
 	// 初始化配置文件
 	original := filepath.Join(p.Source, pomFilename)
 	p.pom = etree.NewDocument()
-	if err = p.pom.ReadFromFile(original); nil != err {
-		return
+	if rfe := p.pom.ReadFromFile(original); nil != rfe {
+		err = rfe
+	} else if abs, ae := filepath.Abs(p.Source); nil != ae {
+		err = ae
+	} else {
+		p.source = abs
 	}
 
 	return
@@ -116,15 +121,15 @@ func (p *plugin) Fields() gox.Fields[any] {
 }
 
 func (p *plugin) passphrase() (passphrase string) {
-	passphrase = p._passphrase
+	passphrase = p.phrase
 	if "" == strings.TrimSpace(passphrase) {
 		passphrase = p.Gpg.Passphrase
 	}
 	if "" == strings.TrimSpace(passphrase) {
 		passphrase = rand.New().String().Length(randLength).Build().Generate()
 	}
-	if "" == p._passphrase {
-		p._passphrase = passphrase
+	if "" == p.phrase {
+		p.phrase = passphrase
 	}
 
 	return

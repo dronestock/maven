@@ -12,9 +12,8 @@ import (
 const (
 	keyProject = "project"
 
-	releaseFormat   = "repository[url='%s']"
-	snapshotFormat  = "snapshotRepository[url='%s']"
-	keyDistribution = "distributionManagement"
+	releaseFormat  = "repository[url='%s']"
+	snapshotFormat = "snapshotRepository[url='%s']"
 )
 
 type stepPom struct {
@@ -116,6 +115,7 @@ func (p *stepPom) writeProperties(project *etree.Element) {
 }
 
 func (p *stepPom) writeRepositories(project *etree.Element) {
+	keyRepositories := "repositories"
 	repositories := project.SelectElement(keyRepositories)
 	if nil == repositories {
 		repositories = project.CreateElement(keyRepositories)
@@ -131,6 +131,7 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 }
 
 func (p *stepPom) writeDistribution(project *etree.Element) {
+	keyDistribution := "distributionManagement"
 	distribution := project.SelectElement(keyDistribution)
 	if nil == distribution {
 		distribution = project.CreateElement(keyDistribution)

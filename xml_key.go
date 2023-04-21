@@ -18,5 +18,4 @@ const (
 
 	keyRepository         = "repository"
 	keySnapshotRepository = "snapshotRepository"
-	keyRepositories       = "repositories"
 )

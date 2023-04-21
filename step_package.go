@@ -40,11 +40,6 @@ func (p *stepPackage) Run(_ context.Context) (err error) {
 		builder.Arg("define", "maven.test.skip=true")
 	}
 
-	// 打印更多日志
-	if p.Verbose {
-		builder.Flag("X")
-	}
-
 	// 执行命令
 	err = p.mvn(builder)
 
