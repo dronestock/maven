@@ -14,7 +14,7 @@ COPY maven /docker/usr/local/bin
 
 
 # 打包真正的镜像
-FROM ccr.ccs.tencentyun.com/storezhang/java:0.0.1
+FROM ccr.ccs.tencentyun.com/storezhang/java:0.0.3
 
 
 LABEL author="storezhang<华寅>" \
