@@ -14,6 +14,8 @@ func (p *plugin) mvn(builder *args.Builder) (err error) {
 	for key, value := range p.defines() {
 		builder.Arg("define", gox.StringBuilder(key, equal, value).String())
 	}
+	// 强制使用UTF-8编码，避免乱码
+	builder.Arg("define", gox.StringBuilder(fileEncoding, equal, utf8).String())
 	// 全局配置文件
 	if abs, ae := filepath.Abs(p.Filepath.Settings); nil == ae {
 		builder.Arg("settings", abs)
