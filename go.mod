@@ -3,7 +3,7 @@ module github.com/dronestock/maven
 go 1.19
 
 require (
-	github.com/beevik/etree v1.1.3
+	github.com/beevik/etree v1.1.4
 	github.com/dronestock/drone v1.0.0
 	github.com/goexl/gex v0.3.1
 	github.com/goexl/gfx v0.1.7
