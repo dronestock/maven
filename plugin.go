@@ -116,7 +116,8 @@ func (p *plugin) Setup() (err error) {
 
 func (p *plugin) Fields() gox.Fields[any] {
 	return gox.Fields[any]{
-		field.New("folder", p.Source),
+		field.New("source", p.Source),
+		field.New("version", p.Version),
 	}
 }
 
