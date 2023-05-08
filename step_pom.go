@@ -49,9 +49,8 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 	p.pom.Indent(xmlSpaces)
 	filename := gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
 	p.filename = filepath.Join(p.Source, filename)
-	if err = p.pom.WriteToFile(p.filename); nil == err {
-		p.Cleanup().Name("清理模块文件").File(p.filename).Build()
-	}
+	p.Cleanup().Name("清理模块文件").File(p.filename).Build()
+	err = p.pom.WriteToFile(p.filename)
 
 	return
 }
