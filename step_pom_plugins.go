@@ -88,7 +88,7 @@ func (p *stepPom) writeJar(plugins *etree.Element) {
 	if nil != jar {
 		plugins.RemoveChildAt(jar.Index())
 	}
-	if !p.Sources {
+	if !p.code() {
 		return
 	}
 
@@ -111,7 +111,7 @@ func (p *stepPom) writeSource(plugins *etree.Element) {
 	if nil != sources {
 		plugins.RemoveChildAt(sources.Index())
 	}
-	if !p.Sources {
+	if !p.code() {
 		return
 	}
 
@@ -130,7 +130,7 @@ func (p *stepPom) writeDoc(plugins *etree.Element) {
 	if nil != docs {
 		plugins.RemoveChildAt(docs.Index())
 	}
-	if !p.Docs {
+	if !p.doc() {
 		return
 	}
 
@@ -157,7 +157,7 @@ func (p *stepPom) writeSign(plugins *etree.Element) {
 	if nil != sign {
 		plugins.RemoveChildAt(sign.Index())
 	}
-	if !p.Sources {
+	if !p.code() {
 		return
 	}
 
@@ -177,7 +177,7 @@ func (p *stepPom) writeNexus(plugins *etree.Element) {
 	if nil != nexus {
 		plugins.RemoveChildAt(nexus.Index())
 	}
-	if !p.Sources {
+	if !p.code() {
 		return
 	}
 

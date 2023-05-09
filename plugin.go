@@ -50,9 +50,9 @@ type plugin struct {
 	// 清理
 	Clean bool `default:"${CLEAN=true}"`
 	// 是否包含源码
-	Sources bool `default:"${SOURCES=true}"`
+	Code *bool `default:"${CODE=true}"`
 	// 是否包含文档
-	Docs bool `default:"${DOCS=true}"`
+	Doc *bool `default:"${DOC=true}"`
 
 	// 打包插件版本
 	JarPluginVersion string `default:"${JAR_PLUGIN_VERSION=3.2.1}"`
@@ -214,4 +214,12 @@ func (p *plugin) deploy() (deploy bool) {
 
 func (p *plugin) override() bool {
 	return 0 != len(p.Properties) || 0 != len(p.Defines) || p.deploy()
+}
+
+func (p *plugin) code() bool {
+	return nil != p.Code && *p.Code
+}
+
+func (p *plugin) doc() bool {
+	return nil != p.Doc && *p.Doc
 }
