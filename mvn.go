@@ -11,9 +11,9 @@ import (
 
 func (p *plugin) mvn(builder *args.Builder) (err error) {
 	// 指定基础目录（不然使用变量来引用目录时，会出错）
-	builder.Arg("define", gox.StringBuilder(basedir, equal, p.Source).String())
-	builder.Arg("define", gox.StringBuilder(basedirProject, equal, p.Source).String())
-	builder.Arg("define", gox.StringBuilder(basedirPom, equal, p.Source).String())
+	builder.Arg("define", gox.StringBuilder(basedir, equal, p.source).String())
+	builder.Arg("define", gox.StringBuilder(basedirProject, equal, p.source).String())
+	builder.Arg("define", gox.StringBuilder(basedirPom, equal, p.source).String())
 	// 额外参数
 	for key, value := range p.defines() {
 		builder.Arg("define", gox.StringBuilder(key, equal, value).String())
