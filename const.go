@@ -5,6 +5,7 @@ const (
 	dot          = "."
 	comma        = ","
 	exclamation  = "!"
+	basedir      = "basedir"
 	release      = "release"
 	snapshot     = "snapshot"
 	fileEncoding = "file.encoding"
