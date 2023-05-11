@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/beevik/etree"
@@ -51,9 +50,7 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 	filename := gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
 	p.filename = filepath.Join(p.source, filename)
 	p.Cleanup().Name("清理模块文件").File(p.filename).Build()
-	if err = p.pom.WriteToFile(p.filename); nil == err {
-		err = os.RemoveAll(p.original)
-	}
+	err = p.pom.WriteToFile(p.filename)
 
 	return
 }
