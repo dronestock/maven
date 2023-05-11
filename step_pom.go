@@ -51,8 +51,12 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 	filename := gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
 	p.filename = filepath.Join(p.source, filename)
 	p.Cleanup().Name("清理模块文件").File(p.filename).Build()
-	if err = p.pom.WriteToFile(p.filename); nil == err {
-		err = os.RemoveAll(p.original)
+	if wfe := p.pom.WriteToFile(p.filename); nil != wfe {
+		err = wfe
+	} else if re := os.RemoveAll(p.original); nil != re {
+		err = re
+	} else {
+		p.Cleanup().Name("恢复配置文件").Write(p.original, p.content, p.mode)
 	}
 
 	return

@@ -97,7 +97,6 @@ func (p *plugin) Steps() drone.Steps {
 		drone.NewStep(newPackageStep(p)).Name("编译打包").Build(),
 		drone.NewStep(newGskStep(p)).Name("上传密钥").Build(),
 		drone.NewStep(newDeployStep(p)).Name("发布仓库").Build(),
-		drone.NewStep(newRecoveryStep(p)).Name("恢复数据").Interrupt().Build(),
 	}
 }
 
