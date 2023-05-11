@@ -56,7 +56,7 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 	} else if re := os.RemoveAll(p.original); nil != re {
 		err = re
 	} else {
-		p.Cleanup().Name("恢复配置文件").Write(p.original, p.content, p.mode)
+		p.Cleanup().Name("恢复配置文件").Write(p.original, p.content, p.mode).Build()
 	}
 
 	return
