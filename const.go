@@ -1,17 +1,14 @@
 package main
 
 const (
-	equal          = "="
-	dot            = "."
-	comma          = ","
-	exclamation    = "!"
-	basedir        = "basedir"
-	basedirProject = "project.basedir"
-	basedirPom     = "pom.basedir"
-	release        = "release"
-	snapshot       = "snapshot"
-	fileEncoding   = "file.encoding"
-	utf8           = "UTF-8"
+	equal        = "="
+	dot          = "."
+	comma        = ","
+	exclamation  = "!"
+	release      = "release"
+	snapshot     = "snapshot"
+	fileEncoding = "file.encoding"
+	utf8         = "UTF-8"
 
 	javaHome    = "JAVA_HOME"
 	gpgHome     = ".gnupg"
