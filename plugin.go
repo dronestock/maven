@@ -1,13 +1,11 @@
 package main
 
 import (
-	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/beevik/etree"
 	"github.com/dronestock/drone"
-	"github.com/goexl/exc"
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
 	"github.com/goexl/gox/rand"
@@ -69,12 +67,8 @@ type plugin struct {
 	// 执行程序
 	Java java `default:"${JAVA}" json:"java,omitempty"`
 
-	source   string
-	original string
-	content  []byte
 	filename string
 	pom      *etree.Document
-	mode     os.FileMode
 	phrase   string
 }
 
@@ -105,21 +99,9 @@ func (p *plugin) Setup() (err error) {
 		p.Repositories = append(p.Repositories, p.Repository)
 	}
 
-	p.original = filepath.Join(p.Source, pomFilename)
+	original := filepath.Join(p.Source, pomFilename)
 	p.pom = etree.NewDocument()
-	if fi, se := os.Stat(p.original); nil != se && os.IsNotExist(se) {
-		err = exc.NewField("配置文件不存在", field.New("filename", p.original))
-	} else if bytes, re := os.ReadFile(p.original); nil != re {
-		err = re
-	} else if rfe := p.pom.ReadFromFile(p.original); nil != rfe {
-		err = rfe
-	} else if abs, ae := filepath.Abs(p.Source); nil != ae {
-		err = ae
-	} else {
-		p.content = bytes
-		p.mode = fi.Mode()
-		p.source = abs
-	}
+	err = p.pom.ReadFromFile(original)
 
 	return
 }

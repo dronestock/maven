@@ -1,15 +1,11 @@
 package main
 
 import (
-	"path/filepath"
-
 	"github.com/beevik/etree"
 )
 
 const (
 	keyBuild           = "build"
-	keySourceDirectory = "sourceDirectory"
-	keySourcePath      = "sourcepath"
 	keyPlugins         = "plugins"
 	keyPlugin          = "plugin"
 	keyExecutions      = "executions"
@@ -55,8 +51,6 @@ func (p *stepPom) writePlugins(project *etree.Element) {
 	if nil == build {
 		build = project.CreateElement(keyBuild)
 	}
-	// 因为指定了配置文件路径，所以需要指定源代码目录
-	p.writeSourceDirectory(build)
 
 	// 配置打包插件
 	plugins := build.SelectElement(keyPlugins)
@@ -73,14 +67,6 @@ func (p *stepPom) writePlugins(project *etree.Element) {
 	p.writeSign(plugins)
 	// 设置发布
 	p.writeNexus(plugins)
-}
-
-func (p *stepPom) writeSourceDirectory(build *etree.Element) {
-	src := build.FindElement(keySourceDirectory)
-	if nil == src {
-		src = build.CreateElement(keySourceDirectory)
-	}
-	src.SetText(p.source)
 }
 
 func (p *stepPom) writeJar(plugins *etree.Element) {
@@ -138,10 +124,6 @@ func (p *stepPom) writeDoc(plugins *etree.Element) {
 	docs.CreateElement(keyGroupId).SetText(xmlMavenGroup)
 	docs.CreateElement(keyArtifactId).SetText(xmlPluginDocArtifact)
 	docs.CreateElement(keyVersion).SetText(p.DocPluginVersion)
-
-	configuration := docs.CreateElement(keyConfiguration)
-	source := configuration.CreateElement(keySourcePath)
-	source.SetText(filepath.Join(p.source, "src", "main", "java"))
 
 	execution := docs.CreateElement(keyExecutions).CreateElement(keyExecution)
 	execution.CreateElement(keyId).SetText(xmlPluginDoc)
