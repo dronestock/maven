@@ -2,7 +2,7 @@ ARG MAVEN_HOME=/usr/share/maven/
 
 
 FROM dockerproxy.com/library/maven:3.9.5 AS maven
-FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.18.5 AS builder
+FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.19.0 AS builder
 
 ARG MAVEN_HOME
 
