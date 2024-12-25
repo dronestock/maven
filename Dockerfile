@@ -34,7 +34,7 @@ RUN set -ex \
     \
     # 安装依赖库
     && apk update \
-    && apk --no-cache add libstdc++ gcompat gnupg \
+    && apk --no-cache add libstdc++ gcompat gnupg2 \
     \
     \
     \

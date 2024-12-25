@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/beevik/etree"
 )
 
@@ -36,17 +38,9 @@ const (
 	gpgPath              = "plugin[artifactId='maven-gpg-plugin']"
 	xmlPluginGpgArtifact = "maven-gpg-plugin"
 	xmlPluginGpg         = "sign-artifacts"
-
-	nexusPath              = "plugin[artifactId='nexus-staging-maven-plugin']"
-	keyServerId            = "serverId"
-	keyNexusUrl            = "nexusUrl"
-	keyAutoRelease         = "autoReleaseAfterClose"
-	xmlNexusGroup          = "org.sonatype.plugins"
-	xmlPluginNexusArtifact = "nexus-staging-maven-plugin"
-	xmlNexusUrl            = "https://oss.sonatype.org/"
 )
 
-func (p *stepPom) writePlugins(project *etree.Element) {
+func (p *stepPom) writePlugins(project *etree.Element, repo *repository) {
 	build := project.SelectElement(keyBuild)
 	if nil == build {
 		build = project.CreateElement(keyBuild)
@@ -66,7 +60,7 @@ func (p *stepPom) writePlugins(project *etree.Element) {
 	// 设置构件签名
 	p.writeSign(plugins)
 	// 设置发布
-	p.writeNexus(plugins)
+	p.writeNexus(plugins, repo)
 }
 
 func (p *stepPom) writeJar(plugins *etree.Element) {
@@ -154,8 +148,16 @@ func (p *stepPom) writeSign(plugins *etree.Element) {
 	execution.CreateElement(keyGoals).CreateElement(keyGoal).SetText(xmlPluginSign)
 }
 
-func (p *stepPom) writeNexus(plugins *etree.Element) {
-	nexus := plugins.FindElementPath(etree.MustCompilePath(nexusPath))
+func (p *stepPom) writeNexus(plugins *etree.Element, repo *repository) {
+	if strings.HasPrefix(repo.Url, "https://central.sonatype.com") {
+		p.writeCentral(plugins, repo)
+	} else {
+		p.writePrivate(plugins, repo)
+	}
+}
+
+func (p *stepPom) writeCentral(plugins *etree.Element, repo *repository) {
+	nexus := plugins.FindElementPath(etree.MustCompilePath("plugin[artifactId='central-publishing-maven-plugin']"))
 	if nil != nexus {
 		plugins.RemoveChildAt(nexus.Index())
 	}
@@ -164,12 +166,34 @@ func (p *stepPom) writeNexus(plugins *etree.Element) {
 	}
 
 	nexus = plugins.CreateElement(keyPlugin)
-	nexus.CreateElement(keyGroupId).SetText(xmlNexusGroup)
-	nexus.CreateElement(keyArtifactId).SetText(xmlPluginNexusArtifact)
+	nexus.CreateElement(keyGroupId).SetText("org.sonatype.central")
+	nexus.CreateElement(keyArtifactId).SetText("central-publishing-maven-plugin")
+	nexus.CreateElement(keyVersion).SetText(p.CentralPluginVersion)
+	nexus.CreateElement("extensions").SetText(xmlTrue)
+
+	configuration := nexus.CreateElement(keyConfiguration)
+	configuration.CreateElement("publishingServerId").SetText(repo.id())
+	configuration.CreateElement(keyTokenAuth).SetText(xmlTrue)
+	configuration.CreateElement("autoPublish").SetText(xmlTrue)
+	configuration.CreateElement("checksums").SetText("required")
+}
+
+func (p *stepPom) writePrivate(plugins *etree.Element, repo *repository) {
+	nexus := plugins.FindElementPath(etree.MustCompilePath("plugin[artifactId='nexus-staging-maven-plugin']"))
+	if nil != nexus {
+		plugins.RemoveChildAt(nexus.Index())
+	}
+	if !p.code() {
+		return
+	}
+
+	nexus = plugins.CreateElement(keyPlugin)
+	nexus.CreateElement(keyGroupId).SetText("org.sonatype.plugins")
+	nexus.CreateElement(keyArtifactId).SetText("nexus-staging-maven-plugin")
 	nexus.CreateElement(keyVersion).SetText(p.NexusPluginVersion)
 
 	configuration := nexus.CreateElement(keyConfiguration)
-	configuration.CreateElement(keyServerId).SetText(keyRepository)
-	configuration.CreateElement(keyNexusUrl).SetText(xmlNexusUrl)
-	configuration.CreateElement(keyAutoRelease).SetText(xmlTrue)
+	configuration.CreateElement("serverId").SetText(repo.id())
+	configuration.CreateElement("nexusUrl").SetText("https://oss.sonatype.org/")
+	configuration.CreateElement("autoReleaseAfterClose").SetText(xmlTrue)
 }

@@ -1,10 +1,8 @@
 package main
 
 import (
-	"path/filepath"
 	"strings"
 
-	"github.com/beevik/etree"
 	"github.com/dronestock/drone"
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
@@ -59,17 +57,16 @@ type plugin struct {
 	// 源码插件版本
 	SourcePluginVersion string `default:"${SOURCE_PLUGIN_VERSION=3.2.1}"`
 	// 文档插件版本
-	DocPluginVersion string `default:"${DOC_PLUGIN_VERSION=3.3.1}"`
+	DocPluginVersion string `default:"${DOC_PLUGIN_VERSION=3.11.2}"`
 	// 签名插件版本
-	GpgPluginVersion string `default:"${GPG_PLUGIN_VERSION=3.0.1}"`
+	GpgPluginVersion string `default:"${GPG_PLUGIN_VERSION=3.2.7}"`
 	// 发布仓库版本
-	NexusPluginVersion string `default:"${NEXUS_PLUGIN_VERSION=1.6.13}"`
+	CentralPluginVersion string `default:"${NEXUS_PLUGIN_VERSION=0.6.0}"`
+	NexusPluginVersion   string `default:"${NEXUS_PLUGIN_VERSION=0.6.0}"`
 	// 执行程序
 	Java java `default:"${JAVA}" json:"java,omitempty"`
 
-	filename string
-	pom      *etree.Document
-	phrase   string
+	phrase string
 }
 
 func newPlugin() drone.Plugin {
@@ -98,10 +95,6 @@ func (p *plugin) Setup() (err error) {
 	if nil != p.Repository {
 		p.Repositories = append(p.Repositories, p.Repository)
 	}
-
-	original := filepath.Join(p.Source, pomFilename)
-	p.pom = etree.NewDocument()
-	err = p.pom.ReadFromFile(original)
 
 	return
 }
@@ -176,8 +169,8 @@ func (p *plugin) defines() (defines map[string]string) {
 
 func (p *plugin) private() (private bool) {
 	private = true
-	for _, _repository := range p.Repositories {
-		private = private && _repository.private()
+	for _, repo := range p.Repositories {
+		private = private && repo.Private
 	}
 
 	return
@@ -186,8 +179,7 @@ func (p *plugin) private() (private bool) {
 func (p *plugin) mirrorOf() string {
 	mirrorOf := gox.StringBuilder()
 	for _, repo := range p.Repositories {
-		mirrorOf.Append(comma).Append(exclamation).Append(repo.releaseId(p.pom))
-		mirrorOf.Append(comma).Append(exclamation).Append(repo.snapshotId(p.pom))
+		mirrorOf.Append(comma).Append(exclamation).Append(repo.id())
 	}
 
 	return mirrorOf.String()

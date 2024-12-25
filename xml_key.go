@@ -16,6 +16,6 @@ const (
 	keyName = "name"
 	keyUrl  = "url"
 
-	keyRepository         = "repository"
-	keySnapshotRepository = "snapshotRepository"
+	keyRepository = "repository"
+	keyTokenAuth  = "tokenAuth"
 )

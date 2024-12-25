@@ -41,7 +41,12 @@ func (p *stepPackage) Run(_ context.Context) (err error) {
 	}
 
 	// 执行命令
-	err = p.mvn(builder)
+	for _, repo := range p.Repositories {
+		err = p.mvn(builder, repo)
+		if nil != err {
+			break
+		}
+	}
 
 	return
 }

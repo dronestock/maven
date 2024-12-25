@@ -20,7 +20,7 @@ func (d *stepDeploy) Runnable() bool {
 	return d.deploy()
 }
 
-func (d *stepDeploy) Run(ctx context.Context) (err error) {
+func (d *stepDeploy) Run(_ context.Context) (err error) {
 	builder := args.New().Build()
 	builder.Subcommand("deploy")
 	// 打印更多日志
@@ -29,7 +29,12 @@ func (d *stepDeploy) Run(ctx context.Context) (err error) {
 	}
 
 	// 执行命令
-	err = d.mvn(builder)
+	for _, repo := range d.Repositories {
+		err = d.mvn(builder, repo)
+		if nil != err {
+			break
+		}
+	}
 
 	return
 }

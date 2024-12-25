@@ -5,8 +5,6 @@ const (
 	dot          = "."
 	comma        = ","
 	exclamation  = "!"
-	release      = "release"
-	snapshot     = "snapshot"
 	fileEncoding = "file.encoding"
 	utf8         = "UTF-8"
 
@@ -18,8 +16,6 @@ const (
 	xmlSpaces  = 2
 	xmlTrue    = "true"
 	xmlAll     = "*"
-
-	mavenRepositoryHost = "https://s01.oss.sonatype.org"
 
 	xmlDeclare        = `version="1.0" encoding="UTF-8"`
 	xmlSettingsXmlns  = "http://maven.apache.org/SETTINGS/1.0.0"

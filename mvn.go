@@ -9,7 +9,7 @@ import (
 	"github.com/goexl/simaqian"
 )
 
-func (p *plugin) mvn(builder *args.Builder) (err error) {
+func (p *plugin) mvn(builder *args.Builder, repo *repository) (err error) {
 	// 额外参数
 	for key, value := range p.defines() {
 		builder.Arg("define", gox.StringBuilder(key, equal, value).String())
@@ -21,7 +21,7 @@ func (p *plugin) mvn(builder *args.Builder) (err error) {
 		builder.Arg("settings", abs)
 	}
 	// 指定模块文件
-	if abs, ae := filepath.Abs(p.filename); nil == ae && p.override() {
+	if abs, ae := filepath.Abs(repo.filename(p.Source)); nil == ae && p.override() {
 		builder.Arg("file", abs)
 	}
 	// 启用调试模式

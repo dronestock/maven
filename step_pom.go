@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 
 	"github.com/beevik/etree"
-	"github.com/goexl/gox"
-	"github.com/goexl/gox/rand"
 )
 
 const (
@@ -31,9 +29,33 @@ func (p *stepPom) Runnable() bool {
 	return p.override()
 }
 
-func (p *stepPom) Run(_ context.Context) (err error) {
+func (p *stepPom) Run(ctx context.Context) (err error) {
+	// 写入镜像仓库，解决一部分包不能从私有仓库下载的问题
+	for _, repo := range p.Repositories {
+		err = p.run(ctx, repo)
+		if nil != err {
+			break
+		}
+	}
+
+	return
+}
+
+func (p *stepPom) run(_ context.Context, repo *repository) (err error) {
+	original := filepath.Join(p.Source, pomFilename)
+	pom := etree.NewDocument()
+	if rfe := pom.ReadFromFile(original); nil != rfe {
+		err = rfe
+	} else {
+		err = p.writeFile(pom, repo)
+	}
+
+	return
+}
+
+func (p *stepPom) writeFile(pom *etree.Document, repo *repository) (err error) {
 	// 设置项目
-	project := p.writeProject()
+	project := p.writeProject(pom)
 	// 设置项目属性
 	p.writeProperties(project)
 	// 设置仓库
@@ -42,24 +64,23 @@ func (p *stepPom) Run(_ context.Context) (err error) {
 		// 设置发布仓库
 		p.writeDistribution(project)
 		// 设置发布插件
-		p.writePlugins(project)
+		p.writePlugins(project, repo)
 	}
 
 	// 写入文件
-	p.pom.Indent(xmlSpaces)
-	filename := gox.StringBuilder(rand.New().String().Length(randLength).Build().Generate(), dot, pomFilename).String()
-	p.filename = filepath.Join(p.Source, filename)
-	p.Cleanup().Name("清理模块文件").File(p.filename).Build()
-	err = p.pom.WriteToFile(p.filename)
+	pom.Indent(xmlSpaces)
+	filename := repo.filename(p.Source)
+	p.Cleanup().Name("清理模块文件").File(filename).Build()
+	err = pom.WriteToFile(filename)
 
 	return
 }
 
-func (p *stepPom) writeProject() (project *etree.Element) {
-	project = p.pom.SelectElement(keyProject)
+func (p *stepPom) writeProject(pom *etree.Document) (project *etree.Element) {
+	project = pom.SelectElement(keyProject)
 	if nil == project {
-		p.pom.CreateProcInst(keyXml, xmlDeclare)
-		project = p.pom.CreateElement(keyProject)
+		pom.CreateProcInst(keyXml, xmlDeclare)
+		project = pom.CreateElement(keyProject)
 		project.CreateAttr(keyXmlns, xmlProjectXmlns)
 		project.CreateAttr(keyXsi, xmlProjectXsi)
 		project.CreateAttr(keySchema, xmlProjectSchema)
@@ -124,10 +145,7 @@ func (p *stepPom) writeRepositories(project *etree.Element) {
 
 	// 写入镜像仓库，解决一部分包不能从私有仓库下载的问题
 	for _, repo := range p.Repositories {
-		// 写入正式仓库
-		p.writeRepository(repositories, repo.releaseId(p.pom), repo.Release, releaseFormat, keyRepository)
-		// 写入快照仓库
-		p.writeRepository(repositories, repo.snapshotId(p.pom), repo.Snapshot, releaseFormat, keyRepository)
+		p.writeRepository(repositories, repo.id(), repo.Url, releaseFormat, keyRepository)
 	}
 }
 
@@ -139,10 +157,7 @@ func (p *stepPom) writeDistribution(project *etree.Element) {
 	}
 
 	for _, repo := range p.Repositories {
-		// 写入正式仓库
-		p.writeRepository(distribution, repo.releaseId(p.pom), repo.Release, releaseFormat, keyRepository)
-		// 写入快照仓库
-		p.writeRepository(distribution, repo.snapshotId(p.pom), repo.Snapshot, snapshotFormat, keySnapshotRepository)
+		p.writeRepository(distribution, repo.id(), repo.Url, releaseFormat, keyRepository)
 	}
 }
 

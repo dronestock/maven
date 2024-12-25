@@ -123,10 +123,7 @@ func (g *stepGlobal) writeMirrors(settings *etree.Element) {
 func (g *stepGlobal) writeServers(settings *etree.Element) {
 	servers := settings.CreateElement(keyServers)
 	for _, repo := range g.Repositories {
-		// 写入正式服务器
-		g.writeServer(servers, repo.Username, repo.Password, repo.releaseId(g.pom))
-		// 写入快照服务器
-		g.writeServer(servers, repo.Username, repo.Password, repo.snapshotId(g.pom))
+		g.writeServer(servers, repo.Username, repo.Password, repo.id())
 	}
 }
 
