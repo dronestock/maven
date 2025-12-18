@@ -1,7 +1,7 @@
 ARG MAVEN_HOME=/usr/share/maven/
 
 
-FROM maven:3.9.11 AS maven
+FROM maven:3.9.12 AS maven
 FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.20.0 AS builder
 
 ARG MAVEN_HOME
