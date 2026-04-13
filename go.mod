@@ -1,12 +1,12 @@
 module github.com/dronestock/maven
 
-go 1.23.0
+go 1.24
 
 require (
 	github.com/beevik/etree v1.6.0
 	github.com/dronestock/drone v1.0.1
 	github.com/goexl/gex v0.3.1
-	github.com/goexl/gfx v0.1.7
+	github.com/goexl/gfx v0.2.8
 	github.com/goexl/gox v0.3.8
 	github.com/goexl/simaqian v0.4.0
 )
@@ -14,7 +14,7 @@ require (
 require (
 	github.com/antonmedv/expr v1.12.5 // indirect
 	github.com/drone/envsubst v1.0.3 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.12.0 // indirect
@@ -34,6 +34,6 @@ require (
 	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 )
